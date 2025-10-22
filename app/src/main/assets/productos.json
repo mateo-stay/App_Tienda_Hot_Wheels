@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "nombre": "Toyota Supra Mk4",
+    "precio": 25000,
+    "descripcion": "Deportivo japonés legendario de Hot Wheels.",
+    "imagen": "https://i.imgur.com/abcd1234.png"
+  },
+  {
+    "id": 2,
+    "nombre": "Nissan Skyline R34",
+    "precio": 30000,
+    "descripcion": "Modelo icónico azul de la saga Fast & Furious.",
+    "imagen": "https://i.imgur.com/efgh5678.png"
+  },
+  {
+    "id": 3,
+    "nombre": "Chevrolet Camaro ZL1",
+    "precio": 27000,
+    "descripcion": "Muscle car americano con diseño agresivo.",
+    "imagen": "https://i.imgur.com/ijkl9101.png"
+  }
+]
