@@ -97,7 +97,7 @@ fun RegisterScreen(vm: AuthViewModel, onRegistered: () -> Unit) {
                 OutlinedTextField(
                     value = rut,
                     onValueChange = { rut = it },
-                    label = { Text("RUT") },
+                    label = { Text("RUT (Ej: 11.111.111-1)") },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )

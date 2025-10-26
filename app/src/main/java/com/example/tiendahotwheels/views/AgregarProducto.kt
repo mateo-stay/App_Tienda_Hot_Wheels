@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -25,8 +26,6 @@ fun AddProductScreen(navController: NavController) {
     var imagenUrl by remember { mutableStateOf("") }
 
     val hotRed = Color(0xFFFF1E00)
-    val darkRed = Color(0xFF8B0000)
-    val yellowAccent = Color(0xFFFFD700)
     val white = Color(0xFFFFFFFF)
 
     Scaffold(
@@ -34,9 +33,10 @@ fun AddProductScreen(navController: NavController) {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        "Agregar producto (visual)",
+                        "Agregar producto",
                         color = Color.White,
-                        style = MaterialTheme.typography.titleLarge
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -49,7 +49,7 @@ fun AddProductScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                    Brush.verticalGradient(listOf(hotRed, darkRed))
+                    Brush.verticalGradient(listOf(hotRed, hotRed))
                 )
                 .padding(padding),
             contentAlignment = Alignment.TopCenter
@@ -71,7 +71,6 @@ fun AddProductScreen(navController: NavController) {
                     Text(
                         " Nuevo Producto",
                         fontSize = 22.sp,
-                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
                         color = hotRed
                     )
 
@@ -119,8 +118,7 @@ fun AddProductScreen(navController: NavController) {
                     ) {
                         Text(
                             "Guardar",
-                            color = Color.Black,
-                            fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+                            color = Color.White,
                         )
                     }
 

@@ -13,6 +13,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -34,8 +35,10 @@ fun BackOfficeScreen(navController: NavController, productViewModel: ProductView
     val white = Color(0xFFFFFFFF)
     val lightGray = Color(0xFFF5F5F5)
 
-    val formatoPesos = NumberFormat.getCurrencyInstance(Locale("es", "CL")).apply {
-        maximumFractionDigits = 0
+    val formatoPesos = remember {
+        NumberFormat.getCurrencyInstance(Locale.forLanguageTag("es-CL")).apply {
+            maximumFractionDigits = 0
+        }
     }
 
     Scaffold(
@@ -56,7 +59,7 @@ fun BackOfficeScreen(navController: NavController, productViewModel: ProductView
                         Icon(
                             Icons.Default.Add,
                             contentDescription = "Agregar producto",
-                            tint = Color.White
+                            tint = Color.Black
                         )
                     }
                 }
@@ -124,7 +127,7 @@ fun BackOfficeScreen(navController: NavController, productViewModel: ProductView
                                 )
 
                                 Spacer(Modifier.height(12.dp))
-                                Divider(color = lightGray, thickness = 1.dp)
+                                HorizontalDivider(color = lightGray, thickness = 1.dp)
                                 Spacer(Modifier.height(12.dp))
 
                                 Row(
@@ -136,7 +139,7 @@ fun BackOfficeScreen(navController: NavController, productViewModel: ProductView
                                         },
                                         modifier = Modifier.weight(1f),
                                         colors = ButtonDefaults.outlinedButtonColors(
-                                            contentColor = hotRed
+                                            contentColor = Color.Black
                                         ),
                                         shape = RoundedCornerShape(8.dp)
                                     ) {
@@ -150,7 +153,7 @@ fun BackOfficeScreen(navController: NavController, productViewModel: ProductView
                                         },
                                         modifier = Modifier.weight(1f),
                                         colors = ButtonDefaults.outlinedButtonColors(
-                                            contentColor = Color.Red
+                                            contentColor = Color.Black
                                         ),
                                         shape = RoundedCornerShape(8.dp)
                                     ) {

@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,8 +39,10 @@ fun HomeScreen(
     val darkRed = Color(0xFFFF1E00)
     val white = Color.White
 
-    val formatoPesos = NumberFormat.getCurrencyInstance(Locale("es", "CL")).apply {
-        maximumFractionDigits = 0
+    val formatoPesos = remember {
+        NumberFormat.getCurrencyInstance(Locale.forLanguageTag("es-CL")).apply {
+            maximumFractionDigits = 0
+        }
     }
 
     Scaffold(

@@ -33,11 +33,10 @@ fun CartScreen(
     val total by remember { derivedStateOf { vm.total() } }
 
     val hotRed = Color(0xFFFF1E00)
-    val darkRed = Color(0xFFFF1E00)
     val white = Color(0xFFFFFFFF)
 
     val formatoPesos = remember {
-        NumberFormat.getCurrencyInstance(Locale("es", "CL")).apply {
+        NumberFormat.getCurrencyInstance(Locale.forLanguageTag("es-CL")).apply {
             maximumFractionDigits = 0
         }
     }
@@ -70,7 +69,7 @@ fun CartScreen(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize()
-                .background(Brush.verticalGradient(listOf(hotRed, darkRed)))
+                .background(Brush.verticalGradient(listOf(hotRed, hotRed)))
         ) {
             Column(
                 modifier = Modifier

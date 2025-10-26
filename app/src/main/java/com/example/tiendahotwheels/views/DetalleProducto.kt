@@ -44,7 +44,7 @@ fun ProductDetailScreen(
     val white = Color.White
 
     val formatoPesos = remember {
-        NumberFormat.getCurrencyInstance(Locale("es", "CL")).apply {
+        NumberFormat.getCurrencyInstance(Locale.forLanguageTag("es-CL")).apply {
             maximumFractionDigits = 0
         }
     }

@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -28,16 +29,16 @@ fun PurchaseSuccessScreen(
     onContinue: () -> Unit,
     onBackHome: () -> Unit
 ) {
-    val fechaActual = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale("es", "CL")).format(Date())
+    val fechaActual = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.forLanguageTag("es-CL")).format(Date())
 
     val hotRed = Color(0xFFFF1E00)
-    val darkRed = Color(0xFF8B0000)
     val pureWhite = Color.White
     val softGray = Color(0xFFF5F5F5)
 
-    // ✅ Formato de precio chileno
-    val formatoPesos = NumberFormat.getCurrencyInstance(Locale("es", "CL")).apply {
-        maximumFractionDigits = 0
+    val formatoPesos = remember {
+        NumberFormat.getCurrencyInstance(Locale.forLanguageTag("es-CL")).apply {
+            maximumFractionDigits = 0
+        }
     }
 
     Scaffold(
@@ -62,7 +63,7 @@ fun PurchaseSuccessScreen(
                 .padding(padding)
                 .fillMaxSize()
                 .background(
-                    Brush.verticalGradient(listOf(hotRed, darkRed))
+                    Brush.verticalGradient(listOf(hotRed, hotRed))
                 ),
             contentAlignment = Alignment.Center
         ) {
