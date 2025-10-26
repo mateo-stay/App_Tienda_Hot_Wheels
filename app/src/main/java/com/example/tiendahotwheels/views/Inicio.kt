@@ -17,11 +17,14 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.example.tiendahotwheels.viewmodel.ProductViewModel
+import java.text.NumberFormat
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,7 +36,11 @@ fun HomeScreen(
 
     val hotRed = Color(0xFFFF1E00)
     val darkRed = Color(0xFFFF1E00)
-    val white = Color(0xFFFFFFFF)
+    val white = Color.White
+
+    val formatoPesos = NumberFormat.getCurrencyInstance(Locale("es", "CL")).apply {
+        maximumFractionDigits = 0
+    }
 
     Scaffold(
         topBar = {
@@ -41,8 +48,10 @@ fun HomeScreen(
                 title = {
                     Text(
                         "Tienda Hot Wheels",
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.ExtraBold,
                         color = Color.White,
-                        fontWeight = FontWeight.Bold
+                        textAlign = TextAlign.Center
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = hotRed)
@@ -64,12 +73,12 @@ fun HomeScreen(
                     Text(
                         "No hay productos disponibles",
                         color = Color.White,
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
                     )
                 }
             } else {
                 LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(16.dp)
@@ -80,7 +89,7 @@ fun HomeScreen(
                                 .fillMaxWidth()
                                 .clickable { onSelectProduct(p.id) },
                             shape = RoundedCornerShape(16.dp),
-                            elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
                             colors = CardDefaults.cardColors(containerColor = white)
                         ) {
                             Row(
@@ -95,7 +104,7 @@ fun HomeScreen(
                                     contentDescription = p.nombre,
                                     contentScale = ContentScale.Crop,
                                     modifier = Modifier
-                                        .size(110.dp)
+                                        .size(100.dp)
                                         .clip(RoundedCornerShape(12.dp))
                                 )
 
@@ -112,21 +121,25 @@ fun HomeScreen(
                                             color = Color.Black
                                         )
                                     )
+
                                     Text(
-                                        text = "$${p.precio}",
+                                        text = formatoPesos.format(p.precio),
                                         style = MaterialTheme.typography.titleMedium.copy(
-                                            color = Color.Black,
+                                            color = hotRed,
                                             fontSize = 18.sp,
                                             fontWeight = FontWeight.Bold
                                         )
                                     )
+
                                     Text(
                                         text = p.descripcion,
                                         style = MaterialTheme.typography.bodySmall.copy(color = Color.DarkGray),
                                         maxLines = 2,
                                         overflow = TextOverflow.Ellipsis
                                     )
+
                                     Spacer(Modifier.height(4.dp))
+
                                     TextButton(
                                         onClick = { onSelectProduct(p.id) },
                                         modifier = Modifier.align(Alignment.End),
@@ -143,4 +156,5 @@ fun HomeScreen(
         }
     }
 }
+
 

@@ -19,6 +19,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tiendahotwheels.viewmodel.ProductViewModel
+import java.text.NumberFormat
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,16 +33,21 @@ fun CartScreen(
     val total by remember { derivedStateOf { vm.total() } }
 
     val hotRed = Color(0xFFFF1E00)
-    val darkRed = Color(0xFF8B0000)
-    val yellowAccent = Color(0xFFFFD700)
+    val darkRed = Color(0xFFFF1E00)
     val white = Color(0xFFFFFFFF)
+
+    val formatoPesos = remember {
+        NumberFormat.getCurrencyInstance(Locale("es", "CL")).apply {
+            maximumFractionDigits = 0
+        }
+    }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(
-                        " Carrito de Compras",
+                        "Carrito de Compras",
                         color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
@@ -63,9 +70,7 @@ fun CartScreen(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(listOf(hotRed, darkRed))
-                )
+                .background(Brush.verticalGradient(listOf(hotRed, darkRed)))
         ) {
             Column(
                 modifier = Modifier
@@ -73,13 +78,12 @@ fun CartScreen(
                     .fillMaxSize()
             ) {
                 if (carrito.value.isEmpty()) {
-
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            "Tu carrito está vacío ",
+                            "Tu carrito está vacío",
                             style = MaterialTheme.typography.titleMedium.copy(
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White
@@ -121,7 +125,7 @@ fun CartScreen(
                                             color = Color.DarkGray
                                         )
                                         Text(
-                                            "Precio: $${item.producto.precio * item.cantidad}",
+                                            "Precio: ${formatoPesos.format(item.producto.precio * item.cantidad)}",
                                             color = hotRed,
                                             fontWeight = FontWeight.Bold
                                         )
@@ -133,7 +137,7 @@ fun CartScreen(
                                         Icon(
                                             imageVector = Icons.Filled.Delete,
                                             contentDescription = "Eliminar del carrito",
-                                            tint = hotRed
+                                            tint = Color.Black
                                         )
                                     }
                                 }
@@ -141,7 +145,11 @@ fun CartScreen(
                         }
                     }
 
-                    HorizontalDivider(thickness = 1.dp, modifier = Modifier.padding(vertical = 8.dp), color = Color.White)
+                    HorizontalDivider(
+                        thickness = 1.dp,
+                        modifier = Modifier.padding(vertical = 8.dp),
+                        color = Color.White
+                    )
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -155,11 +163,11 @@ fun CartScreen(
                             )
                         )
                         Text(
-                            text = "$${"%.0f".format(total)}",
+                            text = formatoPesos.format(total),
                             style = MaterialTheme.typography.titleMedium.copy(
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = yellowAccent
+                                color = Color.White
                             )
                         )
                     }
@@ -170,16 +178,16 @@ fun CartScreen(
                         Button(
                             onClick = { onCheckout(true) },
                             modifier = Modifier.weight(1f),
-                            colors = ButtonDefaults.buttonColors(containerColor = yellowAccent)
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.White)
                         ) {
-                            Text("Comprar ", color = Color.Black, fontWeight = FontWeight.Bold)
+                            Text("Comprar", color = hotRed, fontWeight = FontWeight.Bold)
                         }
                         OutlinedButton(
                             onClick = { onCheckout(false) },
                             modifier = Modifier.weight(1f),
-                            colors = ButtonDefaults.outlinedButtonColors(contentColor = white)
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.White)
                         ) {
-                            Text("Simular Error ")
+                            Text("Simular Error", color = hotRed, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
@@ -187,4 +195,3 @@ fun CartScreen(
         }
     }
 }
-

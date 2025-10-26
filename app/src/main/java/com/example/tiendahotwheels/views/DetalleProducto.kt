@@ -4,8 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -15,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -25,6 +24,8 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.example.tiendahotwheels.viewmodel.ProductViewModel
 import kotlinx.coroutines.launch
+import java.text.NumberFormat
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,8 +40,14 @@ fun ProductDetailScreen(
     val scope = rememberCoroutineScope()
 
     val hotRed = Color(0xFFFF1E00)
-    val darkRed = Color(0xFF8B0000)
-    val white = Color(0xFFFFFFFF)
+    val darkRed = Color(0xFFFF1E00)
+    val white = Color.White
+
+    val formatoPesos = remember {
+        NumberFormat.getCurrencyInstance(Locale("es", "CL")).apply {
+            maximumFractionDigits = 0
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -61,35 +68,25 @@ fun ProductDetailScreen(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = hotRed
-                )
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = hotRed)
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { padding ->
 
         producto?.let { p ->
-            val imagenesAdicionales = listOf(
-                p.imagen,
-                "https://i.imgur.com/Bc5tPq1.jpeg",
-                "https://i.imgur.com/ujFz2bO.jpeg",
-                "https://i.imgur.com/J3D1Z5O.jpeg"
-            )
 
             val opiniones = listOf(
-                "Luis" to "Excelente modelo, muy detallado ",
+                "Luis" to "Excelente modelo, muy detallado.",
                 "Camila" to "Buena calidad, llegó rápido.",
-                "Andrés" to "Perfecto para mi colección Hot Wheels "
+                "Andrés" to "Perfecto para mi colección Hot Wheels."
             )
 
             Box(
                 modifier = Modifier
                     .padding(padding)
                     .fillMaxSize()
-                    .background(
-                        Brush.verticalGradient(listOf(hotRed, darkRed))
-                    )
+                    .background(Brush.verticalGradient(listOf(hotRed, darkRed)))
             ) {
                 LazyColumn(
                     modifier = Modifier
@@ -103,29 +100,26 @@ fun ProductDetailScreen(
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(250.dp),
-                            shape = RoundedCornerShape(16.dp),
-                            elevation = CardDefaults.cardElevation(6.dp)
+                                .height(280.dp)
+                                .shadow(10.dp, RoundedCornerShape(20.dp)),
+                            shape = RoundedCornerShape(20.dp),
+                            colors = CardDefaults.cardColors(containerColor = white)
                         ) {
-                            Image(
-                                painter = rememberAsyncImagePainter(p.imagen),
-                                contentDescription = p.nombre,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier.fillMaxSize()
-                            )
-                        }
-                    }
-
-                    item {
-                        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            items(imagenesAdicionales) { img ->
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(Color.White),
+                                contentAlignment = Alignment.Center
+                            ) {
                                 Image(
-                                    painter = rememberAsyncImagePainter(img),
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Crop,
+                                    painter = rememberAsyncImagePainter(p.imagen),
+                                    contentDescription = p.nombre,
+                                    contentScale = ContentScale.Fit,
                                     modifier = Modifier
-                                        .size(90.dp)
-                                        .clip(RoundedCornerShape(12.dp))
+                                        .fillMaxWidth()
+                                        .fillMaxHeight()
+                                        .padding(12.dp)
+                                        .clip(RoundedCornerShape(16.dp))
                                 )
                             }
                         }
@@ -135,16 +129,16 @@ fun ProductDetailScreen(
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
                                 text = p.nombre,
-                                fontSize = 22.sp,
+                                fontSize = 26.sp,
                                 fontWeight = FontWeight.ExtraBold,
                                 color = white,
                                 textAlign = TextAlign.Center
                             )
                             Spacer(Modifier.height(6.dp))
                             Text(
-                                text = "$${p.precio}",
+                                text = formatoPesos.format(p.precio), // 💰 $2.500
                                 fontSize = 24.sp,
-                                color = Color.Yellow,
+                                color = Color.White,
                                 fontWeight = FontWeight.Bold
                             )
                         }
@@ -160,20 +154,24 @@ fun ProductDetailScreen(
                                 )
                             }
                             Spacer(Modifier.width(8.dp))
-                            Text("4.9 / 5 (123 opiniones)", color = white)
+                            Text("4.9 / 5", color = white)
                         }
                     }
 
                     item {
                         Card(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .shadow(6.dp, RoundedCornerShape(16.dp)),
                             colors = CardDefaults.cardColors(containerColor = white),
-                            elevation = CardDefaults.cardElevation(4.dp),
                             shape = RoundedCornerShape(16.dp)
                         ) {
                             Text(
                                 text = p.descripcion,
-                                style = MaterialTheme.typography.bodyLarge,
+                                style = MaterialTheme.typography.bodyLarge.copy(
+                                    color = Color.DarkGray,
+                                    lineHeight = 22.sp
+                                ),
                                 textAlign = TextAlign.Justify,
                                 modifier = Modifier.padding(16.dp)
                             )
@@ -182,21 +180,27 @@ fun ProductDetailScreen(
 
                     item {
                         Card(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .shadow(6.dp, RoundedCornerShape(16.dp)),
                             colors = CardDefaults.cardColors(containerColor = white),
-                            elevation = CardDefaults.cardElevation(4.dp),
                             shape = RoundedCornerShape(16.dp)
                         ) {
                             Column(Modifier.padding(16.dp)) {
                                 Text(
                                     "Opiniones de clientes",
                                     style = MaterialTheme.typography.titleMedium.copy(
-                                        fontWeight = FontWeight.Bold
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.Black
                                     )
                                 )
                                 Spacer(Modifier.height(8.dp))
                                 opiniones.forEach { (nombre, comentario) ->
-                                    Text("⭐ $nombre: $comentario")
+                                    Text(
+                                        text = "• $nombre: $comentario",
+                                        color = Color.DarkGray,
+                                        fontSize = 15.sp
+                                    )
                                 }
                             }
                         }
@@ -204,8 +208,8 @@ fun ProductDetailScreen(
 
                     item {
                         Row(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            modifier = Modifier.fillMaxWidth(0.85f)
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            modifier = Modifier.fillMaxWidth(0.9f)
                         ) {
                             Button(
                                 onClick = {
@@ -214,25 +218,37 @@ fun ProductDetailScreen(
                                         snackbarHostState.showSnackbar("Producto agregado al carrito 🛒")
                                     }
                                 },
-                                modifier = Modifier.weight(1f),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(50.dp),
+                                shape = RoundedCornerShape(10.dp),
                                 colors = ButtonDefaults.buttonColors(containerColor = white)
                             ) {
-                                Text("Agregar", color = hotRed, fontWeight = FontWeight.Bold)
+                                Text(
+                                    "Agregar",
+                                    color = hotRed,
+                                    fontWeight = FontWeight.Bold
+                                )
                             }
 
                             OutlinedButton(
                                 onClick = onGoCart,
-                                modifier = Modifier.weight(1f),
-                                border = ButtonDefaults.outlinedButtonBorder(enabled = true).copy(
-                                    brush = Brush.horizontalGradient(
-                                        colors = listOf(Color.White, Color.Yellow)
-                                    )
-                                )
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(50.dp),
+                                shape = RoundedCornerShape(10.dp),
+                                colors = ButtonDefaults.buttonColors(containerColor = white)
                             ) {
-                                Text("Ver carrito", color = Color.White)
+                                Text(
+                                    "Ver carrito",
+                                    color = hotRed,
+                                    fontWeight = FontWeight.Bold
+                                )
                             }
                         }
                     }
+
+                    item { Spacer(Modifier.height(32.dp)) }
                 }
             }
         } ?: run {

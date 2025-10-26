@@ -86,7 +86,7 @@ fun AddProductScreen(navController: NavController) {
                     OutlinedTextField(
                         value = precio,
                         onValueChange = { precio = it.filter { c -> c.isDigit() } },
-                        label = { Text("Precio (solo números)") },
+                        label = { Text("Precio") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp)
@@ -114,18 +114,16 @@ fun AddProductScreen(navController: NavController) {
                     Button(
                         onClick = { navController.popBackStack() },
                         modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(containerColor = yellowAccent),
+                        colors = ButtonDefaults.buttonColors(containerColor = hotRed),
                         shape = RoundedCornerShape(10.dp)
                     ) {
-                        Text("Guardar (Mock)", color = Color.Black, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
+                        Text(
+                            "Guardar",
+                            color = Color.Black,
+                            fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+                        )
                     }
 
-                    Text(
-                        " Esta pantalla es solo visual según la rúbrica.",
-                        color = Color.Gray,
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.bodySmall
-                    )
                 }
             }
         }

@@ -21,6 +21,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.tiendahotwheels.viewmodel.ProductViewModel
+import java.text.NumberFormat
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,15 +30,20 @@ fun BackOfficeScreen(navController: NavController, productViewModel: ProductView
     val productos by productViewModel.catalogo.collectAsState(initial = emptyList())
 
     val hotRed = Color(0xFFFF1E00)
-    val darkRed = Color(0xFF8B0000)
+    val darkRed = Color(0xFFFF1E00)
     val white = Color(0xFFFFFFFF)
+    val lightGray = Color(0xFFF5F5F5)
+
+    val formatoPesos = NumberFormat.getCurrencyInstance(Locale("es", "CL")).apply {
+        maximumFractionDigits = 0
+    }
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        " Back Office - Gestión de Productos",
+                        "Gestión de Productos",
                         color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
@@ -65,13 +72,12 @@ fun BackOfficeScreen(navController: NavController, productViewModel: ProductView
                 .padding(padding)
         ) {
             if (productos.isEmpty()) {
-
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "No hay productos cargados aún ",
+                        text = "No hay productos cargados aún",
                         color = Color.White,
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.SemiBold
@@ -79,7 +85,6 @@ fun BackOfficeScreen(navController: NavController, productViewModel: ProductView
                     )
                 }
             } else {
-
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -90,10 +95,11 @@ fun BackOfficeScreen(navController: NavController, productViewModel: ProductView
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(16.dp),
-                            elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
                             colors = CardDefaults.cardColors(containerColor = white)
                         ) {
                             Column(Modifier.padding(16.dp)) {
+
                                 Text(
                                     text = p.nombre,
                                     style = MaterialTheme.typography.titleMedium.copy(
@@ -101,17 +107,24 @@ fun BackOfficeScreen(navController: NavController, productViewModel: ProductView
                                         color = Color.Black
                                     )
                                 )
-                                Spacer(Modifier.height(4.dp))
+
+                                Spacer(Modifier.height(6.dp))
+
                                 Text(
-                                    "Precio: $${p.precio}",
+                                    text = "Precio: ${formatoPesos.format(p.precio)}",
                                     color = hotRed,
                                     fontWeight = FontWeight.Bold
                                 )
+
                                 Spacer(Modifier.height(4.dp))
+
                                 Text(
                                     text = p.descripcion.take(120) + if (p.descripcion.length > 120) "..." else "",
                                     style = MaterialTheme.typography.bodyMedium.copy(color = Color.DarkGray)
                                 )
+
+                                Spacer(Modifier.height(12.dp))
+                                Divider(color = lightGray, thickness = 1.dp)
                                 Spacer(Modifier.height(12.dp))
 
                                 Row(
@@ -119,11 +132,13 @@ fun BackOfficeScreen(navController: NavController, productViewModel: ProductView
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     OutlinedButton(
-                                        onClick = { /* Solo visual */ },
+                                        onClick = {
+                                        },
                                         modifier = Modifier.weight(1f),
                                         colors = ButtonDefaults.outlinedButtonColors(
                                             contentColor = hotRed
-                                        )
+                                        ),
+                                        shape = RoundedCornerShape(8.dp)
                                     ) {
                                         Icon(Icons.Default.Edit, contentDescription = "Editar")
                                         Spacer(Modifier.width(4.dp))
@@ -131,11 +146,13 @@ fun BackOfficeScreen(navController: NavController, productViewModel: ProductView
                                     }
 
                                     OutlinedButton(
-                                        onClick = { /* Solo visual */ },
+                                        onClick = {
+                                        },
                                         modifier = Modifier.weight(1f),
                                         colors = ButtonDefaults.outlinedButtonColors(
                                             contentColor = Color.Red
-                                        )
+                                        ),
+                                        shape = RoundedCornerShape(8.dp)
                                     ) {
                                         Icon(Icons.Default.Delete, contentDescription = "Eliminar")
                                         Spacer(Modifier.width(4.dp))

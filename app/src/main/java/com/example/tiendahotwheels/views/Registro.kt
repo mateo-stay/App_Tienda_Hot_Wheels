@@ -27,7 +27,7 @@ fun RegisterScreen(vm: AuthViewModel, onRegistered: () -> Unit) {
     var mensaje by remember { mutableStateOf<String?>(null) }
 
     val hotRed = Color(0xFFFF1E00)
-    val darkRed = Color(0xFF8B0000)
+    val darkRed = Color(0xFFFF1E00)
     val pureWhite = Color(0xFFFFFFFF)
 
 
@@ -56,7 +56,7 @@ fun RegisterScreen(vm: AuthViewModel, onRegistered: () -> Unit) {
             ) {
                 Text(
                     "Registro de Usuario",
-                    fontSize = 26.sp,
+                    fontSize = 30.sp,
                     fontWeight = FontWeight.ExtraBold,
                     color = hotRed,
                     textAlign = TextAlign.Center
@@ -97,7 +97,7 @@ fun RegisterScreen(vm: AuthViewModel, onRegistered: () -> Unit) {
                 OutlinedTextField(
                     value = rut,
                     onValueChange = { rut = it },
-                    label = { Text("RUT (con DV)") },
+                    label = { Text("RUT") },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -148,7 +148,7 @@ fun RegisterScreen(vm: AuthViewModel, onRegistered: () -> Unit) {
                     Text(
                         it,
                         color = if (it.contains("exitoso"))
-                            Color(0xFF388E3C) // verde éxito
+                            Color(0xFF388E3C)
                         else
                             MaterialTheme.colorScheme.error
                     )

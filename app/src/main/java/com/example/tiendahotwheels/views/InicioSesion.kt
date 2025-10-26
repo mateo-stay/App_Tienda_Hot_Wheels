@@ -56,7 +56,7 @@ fun LoginScreen(
             ) {
                 Text(
                     "Hot Wheels Store",
-                    fontSize = 30.sp,
+                    fontSize = 35.sp,
                     fontWeight = FontWeight.ExtraBold,
                     color = hotRed,
                     textAlign = TextAlign.Center

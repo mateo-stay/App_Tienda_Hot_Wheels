@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,7 +24,7 @@ fun PurchaseFailedScreen(
 ) {
 
     val hotRed = Color(0xFFFF1E00)
-    val darkRed = Color(0xFF8B0000)
+    val darkRed = Color(0xFFFF1E00)
     val pureWhite = Color(0xFFFFFFFF)
 
     Scaffold(
@@ -81,6 +82,7 @@ fun PurchaseFailedScreen(
                         text = "¡Compra rechazada!",
                         style = MaterialTheme.typography.headlineSmall.copy(
                             fontWeight = FontWeight.ExtraBold,
+                            fontSize = 25.sp,
                             color = hotRed
                         ),
                         textAlign = TextAlign.Center
@@ -92,6 +94,7 @@ fun PurchaseFailedScreen(
                         text = "Ocurrió un problema con el pago o no hay stock disponible.",
                         style = MaterialTheme.typography.bodyLarge.copy(
                             textAlign = TextAlign.Center,
+                            fontSize = 15.sp,
                             color = Color.DarkGray
                         )
                     )
@@ -109,7 +112,7 @@ fun PurchaseFailedScreen(
                             shape = RoundedCornerShape(8.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = hotRed)
                         ) {
-                            Text("Intentar nuevamente 🔁", color = Color.White)
+                            Text("Intentar nuevamente", color = Color.White, fontSize = 15.sp)
                         }
 
                         Spacer(Modifier.height(12.dp))
@@ -121,7 +124,7 @@ fun PurchaseFailedScreen(
                                 .height(50.dp),
                             shape = RoundedCornerShape(8.dp)
                         ) {
-                            Text("Volver al carrito 🛒", color = hotRed)
+                            Text("Volver al carrito", color = hotRed, fontSize = 15.sp)
                         }
                     }
                 }
