@@ -4,20 +4,20 @@
     "nombre": "Toyota Supra Mk4",
     "precio": 25000,
     "descripcion": "Deportivo japonés legendario de Hot Wheels.",
-    "imagen": "https://i.imgur.com/abcd1234.png"
+    "imagen": "https://m.media-amazon.com/images/I/71jTQHqxvBL._AC_SL1500_.jpg"
   },
   {
     "id": 2,
     "nombre": "Nissan Skyline R34",
     "precio": 30000,
     "descripcion": "Modelo icónico azul de la saga Fast & Furious.",
-    "imagen": "https://i.imgur.com/efgh5678.png"
+    "imagen": "https://cdnx.jumpseller.com/tienda-bozz/image/64482219/thumb/719/719?1757446530"
   },
   {
     "id": 3,
     "nombre": "Chevrolet Camaro ZL1",
     "precio": 27000,
     "descripcion": "Muscle car americano con diseño agresivo.",
-    "imagen": "https://i.imgur.com/ijkl9101.png"
+    "imagen": "https://www.questloot.cl/wp-content/uploads/2024/08/2017-Camaro-ZL1-Hot-Wheels-2023-1.jpg"
   }
 ]

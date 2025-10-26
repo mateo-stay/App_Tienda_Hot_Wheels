@@ -1,6 +1,6 @@
 package com.example.tiendahotwheels.model
 
-data class CartItem(
+data class ProductoCarrito(
     val producto: Producto,
     val cantidad: Int
 )

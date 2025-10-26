@@ -9,7 +9,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument // 👈 IMPORTANTE: este es el que faltaba
+import androidx.navigation.navArgument
 import com.example.tiendahotwheels.ui.theme.TiendaHotWheelsTheme
 import com.example.tiendahotwheels.viewmodel.AuthViewModel
 import com.example.tiendahotwheels.viewmodel.ProductViewModel
@@ -18,6 +18,7 @@ import com.example.tiendahotwheels.views.*
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val authVM = AuthViewModel()
         val productVM = ProductViewModel(this)
 
@@ -37,16 +38,24 @@ fun TiendaApp(authVM: AuthViewModel, productVM: ProductViewModel) {
 
     NavHost(navController = nav, startDestination = "login") {
 
-        // 🔹 Pantalla de Login
         composable("login") {
             LoginScreen(
                 vm = authVM,
-                onLoginOk = { nav.navigate("home") },
+                onLoginOk = { email ->
+                    if (email == "admin@tienda.cl") {
+                        nav.navigate("backoffice") {
+                            popUpTo("login") { inclusive = true }
+                        }
+                    } else {
+                        nav.navigate("home") {
+                            popUpTo("login") { inclusive = true }
+                        }
+                    }
+                },
                 onGoRegister = { nav.navigate("register") }
             )
         }
 
-        // 🔹 Pantalla de Registro
         composable("register") {
             RegisterScreen(
                 vm = authVM,
@@ -54,7 +63,6 @@ fun TiendaApp(authVM: AuthViewModel, productVM: ProductViewModel) {
             )
         }
 
-        // 🔹 Catálogo principal
         composable("home") {
             HomeScreen(
                 vm = productVM,
@@ -62,57 +70,67 @@ fun TiendaApp(authVM: AuthViewModel, productVM: ProductViewModel) {
             )
         }
 
-        // 🔹 Detalle del producto
         composable(
-            "detail/{id}",
+            route = "detail/{id}",
             arguments = listOf(navArgument("id") { type = NavType.StringType })
         ) { backStack ->
             val id = backStack.arguments?.getString("id") ?: return@composable
             ProductDetailScreen(
                 id = id,
                 vm = productVM,
-                onBack = { nav.popBackStack() }
+                onBack = { nav.popBackStack() },
+                onGoCart = { nav.navigate("cart") }
             )
         }
 
-        // 🔹 Carrito de compras
         composable("cart") {
             CartScreen(
                 vm = productVM,
                 onCheckout = { success ->
                     val pedido = productVM.checkout(!success)
-                    if (pedido != null)
+                    if (pedido != null) {
                         nav.navigate("success/${pedido.id}/${pedido.total}")
-                    else
+                    } else {
                         nav.navigate("failed")
+                    }
                 },
                 onBack = { nav.popBackStack() }
             )
         }
 
-        // 🔹 Compra Exitosa
         composable(
-            "success/{id}/{total}",
+            route = "success/{id}/{total}",
             arguments = listOf(
                 navArgument("id") { type = NavType.StringType },
-                navArgument("total") { type = NavType.IntType }
+                navArgument("total") { type = NavType.StringType }
             )
         ) { backStack ->
             val id = backStack.arguments?.getString("id") ?: ""
-            val total = backStack.arguments?.getInt("total") ?: 0
+            val total = backStack.arguments?.getString("total")?.toDoubleOrNull() ?: 0.0
             PurchaseSuccessScreen(
                 pedidoId = id,
                 total = total,
-                onContinue = { nav.navigate("home") }
+                onContinue = { nav.navigate("home") },
+                onBackHome = { nav.navigate("home") }
             )
         }
 
-        // 🔹 Compra Fallida
         composable("failed") {
             PurchaseFailedScreen(
                 onRetry = { nav.popBackStack() },
                 onBackToCart = { nav.navigate("cart") }
             )
+        }
+
+        composable("backoffice") {
+            BackOfficeScreen(
+                navController = nav,
+                productViewModel = productVM
+            )
+        }
+
+        composable("add_product") {
+            AddProductScreen(nav)
         }
     }
 }

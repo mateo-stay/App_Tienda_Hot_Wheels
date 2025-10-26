@@ -3,23 +3,21 @@ package com.example.tiendahotwheels.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.example.tiendahotwheels.data.ProductRepository
-import com.example.tiendahotwheels.model.CartItem
+import com.example.tiendahotwheels.model.ProductoCarrito
 import com.example.tiendahotwheels.model.Pedido
 import com.example.tiendahotwheels.model.Producto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.util.UUID
 
-class ProductViewModel(
-    context: Context
-) : ViewModel() {
+class ProductViewModel(context: Context) : ViewModel() {
 
     private val repo = ProductRepository(context)
 
     private val _catalogo = MutableStateFlow<List<Producto>>(emptyList())
     val catalogo = _catalogo.asStateFlow()
 
-    private val _carrito = MutableStateFlow<List<CartItem>>(emptyList())
+    private val _carrito = MutableStateFlow<List<ProductoCarrito>>(emptyList())
     val carrito = _carrito.asStateFlow()
 
     init {
@@ -34,7 +32,7 @@ class ProductViewModel(
             val existente = lista[index]
             lista[index] = existente.copy(cantidad = existente.cantidad + 1)
         } else {
-            lista.add(CartItem(producto, 1))
+            lista.add(ProductoCarrito(producto, 1))
         }
 
         _carrito.value = lista
@@ -46,12 +44,18 @@ class ProductViewModel(
 
     fun cambiarCantidad(id: String, nuevaCantidad: Int) {
         _carrito.value = _carrito.value.map {
-            if (it.producto.id == id) it.copy(cantidad = nuevaCantidad.coerceAtLeast(1)) else it
+            if (it.producto.id == id)
+                it.copy(cantidad = nuevaCantidad.coerceAtLeast(1))
+            else it
         }
     }
 
-    fun total(): Int {
+    fun total(): Double {
         return _carrito.value.sumOf { it.producto.precio * it.cantidad }
+    }
+
+    fun vaciarCarrito() {
+        _carrito.value = emptyList()
     }
 
     fun checkout(simularFallo: Boolean = false): Pedido? {
@@ -64,7 +68,15 @@ class ProductViewModel(
             emailUsuario = "cliente@demo.cl"
         )
 
-        _carrito.value = emptyList()
+        vaciarCarrito()
         return pedido
+    }
+
+    fun enCarrito(id: String): Boolean {
+        return _carrito.value.any { it.producto.id == id }
+    }
+
+    fun cantidadProducto(id: String): Int {
+        return _carrito.value.find { it.producto.id == id }?.cantidad ?: 0
     }
 }

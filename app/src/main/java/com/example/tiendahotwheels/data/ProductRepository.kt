@@ -11,13 +11,11 @@ class ProductRepository(private val context: Context) {
 
     fun cargarProductos(): List<Producto> {
         return try {
-            // Intenta abrir el archivo productos.json desde la carpeta assets
             val json = context.assets.open("productos.json").bufferedReader().use { it.readText() }
 
             val tipoLista = object : TypeToken<List<Producto>>() {}.type
             gson.fromJson(json, tipoLista)
         } catch (e: Exception) {
-            // Si el archivo no existe o hay error, retorna lista vacía y evita que la app se caiga
             e.printStackTrace()
             emptyList()
         }

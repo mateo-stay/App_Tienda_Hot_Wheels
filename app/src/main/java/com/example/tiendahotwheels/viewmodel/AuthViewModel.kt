@@ -13,15 +13,25 @@ class AuthViewModel(
     private val _usuarioActual = MutableStateFlow<Usuario?>(null)
     val usuarioActual = _usuarioActual.asStateFlow()
 
-    fun registrar(nombre: String, email: String, direccion: String, rut: String): String? {
-        val nuevoUsuario = Usuario(nombre, email, direccion, rut)
+    fun registrar(
+        nombre: String,
+        email: String,
+        direccion: String,
+        rut: String,
+        password: String
+    ): String? {
+        if (nombre.isBlank() || email.isBlank() || direccion.isBlank() || rut.isBlank() || password.isBlank()) {
+            return "Por favor completa todos los campos requeridos."
+        }
+
+        val nuevoUsuario = Usuario(nombre, email, direccion, rut, password)
         val error = repo.registrar(nuevoUsuario)
         if (error == null) _usuarioActual.value = nuevoUsuario
         return error
     }
 
-    fun login(email: String): Boolean {
-        val usuario = repo.login(email)
+    fun login(email: String, password: String): Boolean {
+        val usuario = repo.login(email, password)
         _usuarioActual.value = usuario
         return usuario != null
     }
