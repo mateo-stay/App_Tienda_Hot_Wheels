@@ -109,7 +109,7 @@ fun PurchaseFailedScreen(
                             shape = RoundedCornerShape(8.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = hotRed)
                         ) {
-                            Text("Intentar nuevamente 🔁", color = Color.White)
+                            Text("Intentar nuevamente ", color = Color.White)
                         }
 
                         Spacer(Modifier.height(12.dp))
@@ -121,7 +121,7 @@ fun PurchaseFailedScreen(
                                 .height(50.dp),
                             shape = RoundedCornerShape(8.dp)
                         ) {
-                            Text("Volver al carrito 🛒", color = hotRed)
+                            Text("Volver al carrito ", color = hotRed)
                         }
                     }
                 }

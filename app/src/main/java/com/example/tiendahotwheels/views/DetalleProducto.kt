@@ -78,9 +78,9 @@ fun ProductDetailScreen(
             )
 
             val opiniones = listOf(
-                "Luis" to "Excelente modelo, muy detallado 😍",
+                "Luis" to "Excelente modelo, muy detallado ",
                 "Camila" to "Buena calidad, llegó rápido.",
-                "Andrés" to "Perfecto para mi colección Hot Wheels 🔥"
+                "Andrés" to "Perfecto para mi colección Hot Wheels "
             )
 
             Box(

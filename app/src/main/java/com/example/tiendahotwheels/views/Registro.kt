@@ -125,7 +125,7 @@ fun RegisterScreen(vm: AuthViewModel, onRegistered: () -> Unit) {
                             password.text
                         )
                         if (error == null) {
-                            mensaje = "Registro exitoso 🎉"
+                            mensaje = "Registro exitoso "
                             onRegistered()
                         } else mensaje = error
                     },

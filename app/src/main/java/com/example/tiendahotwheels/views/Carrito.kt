@@ -40,7 +40,7 @@ fun CartScreen(
             TopAppBar(
                 title = {
                     Text(
-                        "🛒 Carrito de Compras",
+                        " Carrito de Compras",
                         color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
@@ -79,7 +79,7 @@ fun CartScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            "Tu carrito está vacío 😿",
+                            "Tu carrito está vacío ",
                             style = MaterialTheme.typography.titleMedium.copy(
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White
@@ -172,14 +172,14 @@ fun CartScreen(
                             modifier = Modifier.weight(1f),
                             colors = ButtonDefaults.buttonColors(containerColor = yellowAccent)
                         ) {
-                            Text("Comprar ✅", color = Color.Black, fontWeight = FontWeight.Bold)
+                            Text("Comprar ", color = Color.Black, fontWeight = FontWeight.Bold)
                         }
                         OutlinedButton(
                             onClick = { onCheckout(false) },
                             modifier = Modifier.weight(1f),
                             colors = ButtonDefaults.outlinedButtonColors(contentColor = white)
                         ) {
-                            Text("Simular Error ❌")
+                            Text("Simular Error ")
                         }
                     }
                 }

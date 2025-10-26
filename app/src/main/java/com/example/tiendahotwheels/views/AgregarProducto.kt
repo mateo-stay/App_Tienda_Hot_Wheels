@@ -69,7 +69,7 @@ fun AddProductScreen(navController: NavController) {
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
-                        "🧾 Nuevo Producto",
+                        " Nuevo Producto",
                         fontSize = 22.sp,
                         fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
                         color = hotRed
@@ -121,7 +121,7 @@ fun AddProductScreen(navController: NavController) {
                     }
 
                     Text(
-                        "📋 Esta pantalla es solo visual según la rúbrica.",
+                        " Esta pantalla es solo visual según la rúbrica.",
                         color = Color.Gray,
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodySmall

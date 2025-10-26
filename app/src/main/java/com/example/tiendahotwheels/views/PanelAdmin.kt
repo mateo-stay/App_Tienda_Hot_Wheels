@@ -36,7 +36,7 @@ fun BackOfficeScreen(navController: NavController, productViewModel: ProductView
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        "👑 Back Office - Gestión de Productos",
+                        " Back Office - Gestión de Productos",
                         color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
@@ -71,7 +71,7 @@ fun BackOfficeScreen(navController: NavController, productViewModel: ProductView
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "No hay productos cargados aún 🛒",
+                        text = "No hay productos cargados aún ",
                         color = Color.White,
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.SemiBold

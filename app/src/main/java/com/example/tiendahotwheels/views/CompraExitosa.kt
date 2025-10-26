@@ -95,7 +95,7 @@ fun PurchaseSuccessScreen(
                     Spacer(Modifier.height(8.dp))
 
                     Text(
-                        text = "Gracias por confiar en Hot Wheels Store 🏎️",
+                        text = "Gracias por confiar en Hot Wheels Store ",
                         style = MaterialTheme.typography.bodyLarge.copy(
                             textAlign = TextAlign.Center,
                             color = Color.DarkGray
@@ -107,17 +107,17 @@ fun PurchaseSuccessScreen(
                     Spacer(Modifier.height(16.dp))
 
                     Text(
-                        "📦 Detalles del pedido",
+                        " Detalles del pedido",
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp,
                         color = Color.Black
                     )
 
                     Spacer(Modifier.height(8.dp))
-                    Text("🆔 ID del Pedido: $pedidoId", color = Color.Gray)
-                    Text("💰 Total: $${"%.0f".format(total)}", color = Color.Gray)
-                    Text("📅 Fecha: $fechaActual", color = Color.Gray)
-                    Text("📨 Confirmación enviada a: cliente@demo.cl", color = Color.Gray)
+                    Text(" ID del Pedido: $pedidoId", color = Color.Gray)
+                    Text(" Total: $${"%.0f".format(total)}", color = Color.Gray)
+                    Text(" Fecha: $fechaActual", color = Color.Gray)
+                    Text(" Confirmación enviada a: cliente@demo.cl", color = Color.Gray)
 
                     Spacer(Modifier.height(24.dp))
                     HorizontalDivider(thickness = 1.dp)
@@ -132,7 +132,7 @@ fun PurchaseSuccessScreen(
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(8.dp)
                         ) {
-                            Text("🏠 Ir al inicio")
+                            Text(" Ir al inicio")
                         }
 
                         Button(
