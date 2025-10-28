@@ -34,11 +34,7 @@ fun PanelAdministracion(
 ) {
     val productos by productoVM.catalogo.collectAsState(initial = emptyList())
 
-<<<<<<< Updated upstream
-    val RojoClaro = Color(0xFFFF1E00)
-=======
     val rojoClaro = Color(0xFFFF1E00)
->>>>>>> Stashed changes
     val blanco = Color.White
     val grisClaro = Color(0xFFF5F5F5)
 
@@ -59,11 +55,7 @@ fun PanelAdministracion(
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-<<<<<<< Updated upstream
-                    containerColor = RojoClaro
-=======
                     containerColor = rojoClaro
->>>>>>> Stashed changes
                 ),
                 actions = {
                     Row {
@@ -95,11 +87,7 @@ fun PanelAdministracion(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-<<<<<<< Updated upstream
-                    Brush.verticalGradient(listOf(RojoClaro))
-=======
                     Brush.verticalGradient(listOf(rojoClaro, rojoClaro))
->>>>>>> Stashed changes
                 )
                 .padding(padding)
         ) {
@@ -144,11 +132,7 @@ fun PanelAdministracion(
 
                                 Text(
                                     text = "Precio: ${formatoPesos.format(p.precio)}",
-<<<<<<< Updated upstream
-                                    color = RojoClaro,
-=======
                                     color = rojoClaro,
->>>>>>> Stashed changes
                                     fontWeight = FontWeight.Bold
                                 )
 
