@@ -40,6 +40,11 @@ class AuthViewModel(
         return dv == dvEsperado
     }
 
+    private fun validarCorreo(email: String): Boolean {
+        val patronCorreo = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}\$")
+        return patronCorreo.matches(email)
+    }
+
     fun registrar(
         nombre: String,
         email: String,
@@ -53,6 +58,14 @@ class AuthViewModel(
 
         if (!validarRut(rut)) {
             return "El RUT ingresado no es válido. Verifica el formato y el dígito verificador."
+        }
+
+        if (!validarCorreo(email)) {
+            return "El correo electrónico no es válido. Asegúrate de incluir '@' y un dominio."
+        }
+
+        if (password.length < 6) {
+            return "La contraseña debe tener al menos 6 caracteres."
         }
 
         val nuevoUsuario = Usuario(nombre, email, direccion, rut, password)
