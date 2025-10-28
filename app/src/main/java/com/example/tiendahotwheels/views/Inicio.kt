@@ -3,12 +3,14 @@ package com.example.tiendahotwheels.views
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -49,9 +51,7 @@ fun HomeScreen(
         }
     }
 
-
     var categoriaSeleccionada by remember { mutableStateOf("Todos") }
-
 
     val productosFiltrados = remember(productos.value, categoriaSeleccionada) {
         if (categoriaSeleccionada == "Todos") productos.value
@@ -86,7 +86,7 @@ fun HomeScreen(
                         onLogout()
                     }) {
                         Icon(
-                            imageVector = Icons.Filled.Logout,
+                            imageVector = Icons.AutoMirrored.Filled.Logout,
                             contentDescription = "Cerrar sesión",
                             tint = Color.White
                         )
@@ -103,13 +103,16 @@ fun HomeScreen(
                 .background(Brush.verticalGradient(listOf(hotRed, darkRed)))
                 .padding(padding)
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(18.dp)) {
 
                 val categorias = listOf("Todos", "JDM", "Muscle", "Europeo", "Eléctrico")
 
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .horizontalScroll(rememberScrollState())
+                        .padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     categorias.forEach { cat ->
                         FilterChip(
@@ -117,15 +120,18 @@ fun HomeScreen(
                             onClick = { categoriaSeleccionada = cat },
                             label = {
                                 Text(
-                                    cat,
-                                    fontWeight = if (categoriaSeleccionada == cat) FontWeight.Bold else FontWeight.Normal
+                                    text = cat,
+                                    fontWeight = if (categoriaSeleccionada == cat)
+                                        FontWeight.Bold else FontWeight.Normal,
+                                    color = if (categoriaSeleccionada == cat)
+                                        hotRed else Color.White
                                 )
                             },
                             colors = FilterChipDefaults.filterChipColors(
                                 selectedContainerColor = Color.White,
-                                selectedLabelColor = Color.Black,
-                                labelColor = Color.White,
-                                containerColor = hotRed.copy(alpha = 0.3f)
+                                selectedLabelColor = hotRed,
+                                containerColor = hotRed.copy(alpha = 0.2f),
+                                labelColor = Color.White
                             )
                         )
                     }
@@ -203,8 +209,12 @@ fun HomeScreen(
                                         )
 
                                         Text(
-                                            text = if (p.stock > 0) "Stock: ${p.stock}" else "Sin stock",
-                                            color = if (p.stock > 0) Color(0xFF2E7D32) else Color.Red,
+                                            text = if (p.stock > 0)
+                                                "Stock: ${p.stock}"
+                                            else "Sin stock",
+                                            color = if (p.stock > 0)
+                                                Color(0xFF2E7D32)
+                                            else Color.Red,
                                             fontSize = 13.sp,
                                             fontWeight = FontWeight.SemiBold
                                         )
@@ -235,3 +245,4 @@ fun HomeScreen(
         }
     }
 }
+

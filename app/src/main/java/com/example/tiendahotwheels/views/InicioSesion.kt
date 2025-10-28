@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.example.tiendahotwheels.viewmodel.AuthViewModel
 
 @Composable
-fun LoginScreen(
+fun InicioSesion(
     vm: AuthViewModel,
     onLoginOk: (String) -> Unit,
     onGoRegister: () -> Unit
@@ -28,7 +28,7 @@ fun LoginScreen(
     var error by remember { mutableStateOf<String?>(null) }
 
     val hotRed = Color(0xFFFF1E00)
-    val darkRed = Color(0xFFFF1E00)
+    val darkRed = Color(0xFFD90000)
     val pureWhite = Color(0xFFFFFFFF)
 
     Box(
@@ -116,10 +116,11 @@ fun LoginScreen(
                     Text(
                         "¿No tienes cuenta? Regístrate aquí",
                         color = Color.Black,
-                         fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Medium
                     )
                 }
             }
         }
     }
 }
+

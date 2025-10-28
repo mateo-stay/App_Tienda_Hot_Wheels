@@ -14,6 +14,7 @@ import com.example.tiendahotwheels.ui.theme.TiendaHotWheelsTheme
 import com.example.tiendahotwheels.viewmodel.AuthViewModel
 import com.example.tiendahotwheels.viewmodel.ProductViewModel
 import com.example.tiendahotwheels.views.*
+import com.example.tiendahotwheels.views.InicioSesion
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,22 +37,19 @@ class MainActivity : ComponentActivity() {
 fun TiendaApp(authVM: AuthViewModel, productVM: ProductViewModel) {
     val nav = rememberNavController()
 
-    NavHost(navController = nav, startDestination = "login") {
+    NavHost(navController = nav, startDestination = "inicio_sesion") {
 
-
-        composable("login") {
-            LoginScreen(
+        composable("inicio_sesion") {
+            InicioSesion(
                 vm = authVM,
                 onLoginOk = { email ->
                     if (email == "admin@tienda.cl") {
-
                         nav.navigate("backoffice") {
-                            popUpTo("login") { inclusive = true }
+                            popUpTo("inicio_sesion") { inclusive = true }
                         }
                     } else {
-
                         nav.navigate("inicio") {
-                            popUpTo("login") { inclusive = true }
+                            popUpTo("inicio_sesion") { inclusive = true }
                         }
                     }
                 },
@@ -59,14 +57,12 @@ fun TiendaApp(authVM: AuthViewModel, productVM: ProductViewModel) {
             )
         }
 
-
         composable("registro") {
             RegisterScreen(
                 vm = authVM,
-                onRegistered = { nav.navigate("login") }
+                onRegistered = { nav.navigate("inicio_sesion") }
             )
         }
-
 
         composable("inicio") {
             HomeScreen(
@@ -75,8 +71,8 @@ fun TiendaApp(authVM: AuthViewModel, productVM: ProductViewModel) {
                 onSelectProduct = { id -> nav.navigate("detalle/$id") },
                 onLogout = {
                     authVM.logout()
-                    nav.navigate("login") {
-                        popUpTo("login") { inclusive = true }
+                    nav.navigate("inicio_sesion") {
+                        popUpTo("inicio_sesion") { inclusive = true }
                     }
                 }
             )
@@ -95,7 +91,6 @@ fun TiendaApp(authVM: AuthViewModel, productVM: ProductViewModel) {
             )
         }
 
-
         composable("carrito") {
             CartScreen(
                 vm = productVM,
@@ -110,7 +105,6 @@ fun TiendaApp(authVM: AuthViewModel, productVM: ProductViewModel) {
                 onBack = { nav.popBackStack() }
             )
         }
-
 
         composable(
             route = "compra_exitosa/{id}/{total}",
@@ -129,7 +123,6 @@ fun TiendaApp(authVM: AuthViewModel, productVM: ProductViewModel) {
             )
         }
 
-
         composable("compra_rechazada") {
             PurchaseFailedScreen(
                 onRetry = { nav.popBackStack() },
@@ -137,14 +130,12 @@ fun TiendaApp(authVM: AuthViewModel, productVM: ProductViewModel) {
             )
         }
 
-
         composable("backoffice") {
             BackOfficeScreen(
                 navController = nav,
                 productViewModel = productVM
             )
         }
-
 
         composable("agregar_producto") {
             AddProductScreen(nav)
