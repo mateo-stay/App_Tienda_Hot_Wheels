@@ -2,7 +2,7 @@ package com.example.tiendahotwheels.data
 
 import com.example.tiendahotwheels.model.Usuario
 
-object FakeDatabase {
+object DataBaseFalso {
 
     val usuarios = mutableListOf(
         Usuario(

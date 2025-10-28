@@ -4,7 +4,7 @@ import com.example.tiendahotwheels.model.Usuario
 
 class AuthRepository {
 
-    private val usuarios = FakeDatabase.usuarios
+    private val usuarios = DataBaseFalso.usuarios
     private var usuarioActual: Usuario? = null
 
     fun registrar(usuario: Usuario): String? {

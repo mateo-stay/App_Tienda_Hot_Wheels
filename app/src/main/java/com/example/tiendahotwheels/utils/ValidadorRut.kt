@@ -1,6 +1,6 @@
 package com.example.tiendahotwheels.utils
 
-object RutValidator {
+object ValidadorRut {
 
     fun isValid(rut: String): Boolean {
         val clean = rut.replace(".", "").replace("-", "").uppercase()
