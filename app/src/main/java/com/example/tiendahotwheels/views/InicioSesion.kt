@@ -55,7 +55,7 @@ fun LoginScreen(
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 32.dp)
             ) {
                 Text(
-                    "Hot Wheels Store",
+                    "Tienda Hot Wheels",
                     fontSize = 35.sp,
                     fontWeight = FontWeight.ExtraBold,
                     color = hotRed,

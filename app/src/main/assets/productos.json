@@ -1,108 +1,139 @@
 [
   {
-    "id": 1,
+    "id": "1",
     "nombre": "Toyota Supra Mk4",
     "precio": 2500,
     "descripcion": "Deportivo japonés legendario de Hot Wheels.",
-    "imagen": "https://1stationhub.com.my/cdn/shop/files/HOTWHEELS_THE_90S_TOYOTA_SUPRA_GREEN_1_1024x1024.jpg?v=1724750022"
+    "imagen": "https://1stationhub.com.my/cdn/shop/files/HOTWHEELS_THE_90S_TOYOTA_SUPRA_GREEN_1_1024x1024.jpg?v=1724750022",
+    "categoria": "JDM",
+    "stock": 8
   },
   {
-    "id": 2,
+    "id": "2",
     "nombre": "Nissan Skyline R34",
     "precio": 3000,
     "descripcion": "Modelo icónico azul de la saga Fast & Furious.",
-    "imagen": "https://cdnx.jumpseller.com/tienda-bozz/image/64482219/thumb/719/719?1757446530"
+    "imagen": "https://cdnx.jumpseller.com/tienda-bozz/image/64482219/thumb/719/719?1757446530",
+    "categoria": "JDM",
+    "stock": 7
   },
   {
-    "id": 3,
+    "id": "3",
     "nombre": "Chevrolet Camaro ZL1",
     "precio": 2700,
     "descripcion": "Muscle car americano con diseño agresivo.",
-    "imagen": "https://www.questloot.cl/wp-content/uploads/2024/08/2017-Camaro-ZL1-Hot-Wheels-2023-1.jpg"
+    "imagen": "https://www.questloot.cl/wp-content/uploads/2024/08/2017-Camaro-ZL1-Hot-Wheels-2023-1.jpg",
+    "categoria": "Muscle",
+    "stock": 5
   },
   {
-    "id": 4,
+    "id": "4",
     "nombre": "Ford Mustang Shelby GT500",
     "precio": 3200,
     "descripcion": "Potente clásico americano de Hot Wheels.",
-    "imagen": "https://www.blasterchile.cl/cdn/shop/files/67_Shelby_Gt500_Mustang_60_blanco_listo.webp?v=1748394257"
+    "imagen": "https://www.blasterchile.cl/cdn/shop/files/67_Shelby_Gt500_Mustang_60_blanco_listo.webp?v=1748394257",
+    "categoria": "Muscle",
+    "stock": 6
   },
   {
-    "id": 5,
+    "id": "5",
     "nombre": "Mazda RX-7 FD",
     "precio": 2800,
     "descripcion": "El legendario motor rotativo japonés convertido en miniatura perfecta.",
-    "imagen": "https://http2.mlstatic.com/D_905604-MLA93203061861_092025-C.jpg"
+    "imagen": "https://http2.mlstatic.com/D_905604-MLA93203061861_092025-C.jpg",
+    "categoria": "JDM",
+    "stock": 9
   },
   {
-    "id": 6,
+    "id": "6",
     "nombre": "Lamborghini Aventador SVJ",
     "precio": 3500,
     "descripcion": "Superdeportivo italiano con diseño aerodinámico impresionante.",
-    "imagen": "https://99diecast.com/cdn/shop/files/HW-FYG07_front_41cbaf02-a689-4a25-8211-a2125fc48339_1200x1200.jpg?v=1752186092"
+    "imagen": "https://99diecast.com/cdn/shop/files/HW-FYG07_front_41cbaf02-a689-4a25-8211-a2125fc48339_1200x1200.jpg?v=1752186092",
+    "categoria": "Europeo",
+    "stock": 4
   },
   {
-    "id": 7,
+    "id": "7",
     "nombre": "Honda NSX Type R",
     "precio": 2900,
     "descripcion": "Deportivo japonés con ingeniería avanzada y líneas elegantes.",
-    "imagen": "https://www.blasterchile.cl/cdn/shop/files/90_acura_nsc_the_90s_blanco_listo.webp?v=1743954921"
+    "imagen": "https://www.blasterchile.cl/cdn/shop/files/90_acura_nsc_the_90s_blanco_listo.webp?v=1743954921",
+    "categoria": "JDM",
+    "stock": 7
   },
   {
-    "id": 8,
+    "id": "8",
     "nombre": "Porsche 911 GT3 RS",
     "precio": 3100,
     "descripcion": "Uno de los Porsche más emblemáticos, diseñado para la pista.",
-    "imagen": "https://www.blasterchile.cl/cdn/shop/files/Porsche_911_GT3_Race_Day_2_listo.webp?v=1747547977&width=832"
+    "imagen": "https://www.blasterchile.cl/cdn/shop/files/Porsche_911_GT3_Race_Day_2_listo.webp?v=1747547977&width=832",
+    "categoria": "Europeo",
+    "stock": 6
   },
   {
-    "id": 9,
-    "nombre": "McLaren w1",
+    "id": "9",
+    "nombre": "McLaren W1",
     "precio": 3400,
     "descripcion": "Híbrido británico con velocidad y tecnología de otro nivel.",
-    "imagen": "https://www.blasterchile.cl/cdn/shop/files/Mclaren_W1_Race_Day_naranjo_listo.webp?v=1747855050&width=832"
+    "imagen": "https://www.blasterchile.cl/cdn/shop/files/Mclaren_W1_Race_Day_naranjo_listo.webp?v=1747855050&width=832",
+    "categoria": "Europeo",
+    "stock": 5
   },
   {
-    "id": 10,
+    "id": "10",
     "nombre": "Dodge Charger R/T 1970",
     "precio": 2600,
     "descripcion": "El clásico muscle car de Toretto, pura potencia americana.",
-    "imagen": "https://www.blasterchile.cl/cdn/shop/files/70_Dodge_Charger_Tooned_negro_listo.webp?v=1747855050&width=352"
+    "imagen": "https://www.blasterchile.cl/cdn/shop/files/70_Dodge_Charger_Tooned_negro_listo.webp?v=1747855050&width=352",
+    "categoria": "Muscle",
+    "stock": 7
   },
   {
-    "id": 11,
+    "id": "11",
     "nombre": "Subaru BRZ",
     "precio": 2400,
     "descripcion": "Coupé japonés de tracción trasera con manejo perfecto.",
-    "imagen": "https://www.blasterchile.cl/cdn/shop/files/subaru_brz_listo.webp?v=1741723985&width=352"
+    "imagen": "https://www.blasterchile.cl/cdn/shop/files/subaru_brz_listo.webp?v=1741723985&width=352",
+    "categoria": "JDM",
+    "stock": 10
   },
   {
-    "id": 12,
+    "id": "12",
     "nombre": "Ferrari F40",
     "precio": 3800,
     "descripcion": "Clásico Ferrari de los 80, símbolo de velocidad pura.",
-    "imagen": "https://1stationhub.com.my/cdn/shop/files/HOTWHEELS_HW_EXOTICS_FERRARI_F40_COMPETIZIONE-YELLOW_1024x1024.jpg?v=1759037341"
+    "imagen": "https://1stationhub.com.my/cdn/shop/files/HOTWHEELS_HW_EXOTICS_FERRARI_F40_COMPETIZIONE-YELLOW_1024x1024.jpg?v=1759037341",
+    "categoria": "Europeo",
+    "stock": 3
   },
   {
-    "id": 13,
+    "id": "13",
     "nombre": "Tesla Roadster",
     "precio": 3300,
     "descripcion": "Superauto eléctrico futurista con diseño minimalista.",
-    "imagen": "https://www.blasterchile.cl/cdn/shop/files/Tesla_Roadster_Then_and_Now_naranjo_listo.webp?v=1752453736&width=352"
+    "imagen": "https://www.blasterchile.cl/cdn/shop/files/Tesla_Roadster_Then_and_Now_naranjo_listo.webp?v=1752453736&width=352",
+    "categoria": "Eléctrico",
+    "stock": 6
   },
   {
-    "id": 14,
+    "id": "14",
     "nombre": "Volkswagen Beetle",
     "precio": 2100,
     "descripcion": "El clásico escarabajo alemán reinterpretado en versión Hot Wheels.",
-    "imagen": "https://www.blasterchile.cl/cdn/shop/files/Volkswagen_Beetle_Tooned_4_de_10_listo.webp?v=1742094716&width=352"
+    "imagen": "https://www.blasterchile.cl/cdn/shop/files/Volkswagen_Beetle_Tooned_4_de_10_listo.webp?v=1742094716&width=352",
+    "categoria": "Europeo",
+    "stock": 9
   },
   {
-    "id": 15,
+    "id": "15",
     "nombre": "Pagani Huayra",
     "precio": 3700,
     "descripcion": "Obra maestra italiana con curvas exóticas y potencia brutal.",
-    "imagen": "https://www.blasterchile.cl/cdn/shop/files/Pagani_Huayra_Speed_Graphics_listo.webp?v=1761142768&width=352"
+    "imagen": "https://www.blasterchile.cl/cdn/shop/files/Pagani_Huayra_Speed_Graphics_listo.webp?v=1761142768&width=352",
+    "categoria": "Europeo",
+    "stock": 5
   }
 ]
+
 

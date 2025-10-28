@@ -24,22 +24,51 @@ class ProductViewModel(context: Context) : ViewModel() {
         _catalogo.value = repo.cargarProductos()
     }
 
+    // 🛒 Agregar al carrito con control de stock
     fun agregarAlCarrito(producto: Producto) {
         val lista = _carrito.value.toMutableList()
         val index = lista.indexOfFirst { it.producto.id == producto.id }
 
-        if (index >= 0) {
-            val existente = lista[index]
-            lista[index] = existente.copy(cantidad = existente.cantidad + 1)
-        } else {
-            lista.add(ProductoCarrito(producto, 1))
-        }
+        // Buscar producto en catálogo
+        val productoCatalogo = _catalogo.value.find { it.id == producto.id }
 
-        _carrito.value = lista
+        if (productoCatalogo != null && productoCatalogo.stock > 0) {
+            if (index >= 0) {
+                val existente = lista[index]
+                if (existente.cantidad < productoCatalogo.stock) {
+                    lista[index] = existente.copy(cantidad = existente.cantidad + 1)
+                    productoCatalogo.stock -= 1
+                }
+            } else {
+                lista.add(ProductoCarrito(producto, 1))
+                productoCatalogo.stock -= 1
+            }
+            _carrito.value = lista
+            _catalogo.value = _catalogo.value.toList() // 🔁 refresca catálogo
+        }
     }
 
+    // 🔥 Elimina solo una unidad y devuelve stock
     fun eliminarDelCarrito(id: String) {
-        _carrito.value = _carrito.value.filterNot { it.producto.id == id }
+        val lista = _carrito.value.toMutableList()
+        val index = lista.indexOfFirst { it.producto.id == id }
+
+        if (index >= 0) {
+            val item = lista[index]
+            val productoCatalogo = _catalogo.value.find { it.id == id }
+
+            if (item.cantidad > 1) {
+                lista[index] = item.copy(cantidad = item.cantidad - 1)
+            } else {
+                lista.removeAt(index)
+            }
+
+            // 🧮 Devolver 1 unidad al stock
+            productoCatalogo?.stock = (productoCatalogo?.stock ?: 0) + 1
+
+            _carrito.value = lista
+            _catalogo.value = _catalogo.value.toList()
+        }
     }
 
     fun cambiarCantidad(id: String, nuevaCantidad: Int) {
@@ -50,11 +79,14 @@ class ProductViewModel(context: Context) : ViewModel() {
         }
     }
 
-    fun total(): Double {
-        return _carrito.value.sumOf { it.producto.precio * it.cantidad }
-    }
+    fun total(): Double = _carrito.value.sumOf { it.producto.precio * it.cantidad }
 
     fun vaciarCarrito() {
+        // 🔁 Devolver stock al vaciar
+        _carrito.value.forEach { item ->
+            val productoCatalogo = _catalogo.value.find { it.id == item.producto.id }
+            productoCatalogo?.stock = (productoCatalogo?.stock ?: 0) + item.cantidad
+        }
         _carrito.value = emptyList()
     }
 
@@ -72,11 +104,8 @@ class ProductViewModel(context: Context) : ViewModel() {
         return pedido
     }
 
-    fun enCarrito(id: String): Boolean {
-        return _carrito.value.any { it.producto.id == id }
-    }
+    fun enCarrito(id: String): Boolean = _carrito.value.any { it.producto.id == id }
 
-    fun cantidadProducto(id: String): Int {
-        return _carrito.value.find { it.producto.id == id }?.cantidad ?: 0
-    }
+    fun cantidadProducto(id: String): Int =
+        _carrito.value.find { it.producto.id == id }?.cantidad ?: 0
 }
