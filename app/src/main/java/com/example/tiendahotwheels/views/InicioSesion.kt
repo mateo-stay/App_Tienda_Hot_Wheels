@@ -31,14 +31,14 @@ fun InicioSesion(
     var cargando by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
-    val hotRed = Color(0xFFFF1E00)
-    val white = Color.White
+    val RojoClaro = Color(0xFFFF1E00)
+    val blanco = Color.White
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(
-                Brush.verticalGradient(colors = listOf(hotRed, hotRed))
+                Brush.verticalGradient(colors = listOf(RojoClaro,RojoClaro))
             ),
         contentAlignment = Alignment.Center
     ) {
@@ -48,7 +48,7 @@ fun InicioSesion(
                 .fillMaxWidth(),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
             shape = RoundedCornerShape(20.dp),
-            colors = CardDefaults.cardColors(containerColor = white)
+            colors = CardDefaults.cardColors(containerColor = blanco)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -58,7 +58,7 @@ fun InicioSesion(
                     "Tienda Hot Wheels",
                     fontSize = 36.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    color = hotRed,
+                    color = RojoClaro,
                     textAlign = TextAlign.Center
                 )
 
@@ -89,7 +89,7 @@ fun InicioSesion(
                     onClick = {
                         cargando = true
                         scope.launch {
-                            delay(1000) // Simula carga (1 segundo)
+                            delay(1000)
                             val ok = vm.login(email.text, password.text)
                             cargando = false
                             if (ok) {
@@ -104,7 +104,7 @@ fun InicioSesion(
                         .fillMaxWidth()
                         .height(50.dp),
                     shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = hotRed)
+                    colors = ButtonDefaults.buttonColors(containerColor = RojoClaro)
                 ) {
                     if (cargando) {
                         CircularProgressIndicator(

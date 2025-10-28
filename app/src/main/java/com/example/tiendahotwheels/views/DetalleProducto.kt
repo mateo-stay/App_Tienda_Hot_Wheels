@@ -39,8 +39,8 @@ fun DetalleProducto(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
-    val hotRed = Color(0xFFFF1E00)
-    val white = Color.White
+    val RojoClaro = Color(0xFFFF1E00)
+    val blanco = Color.White
 
     val formatoPesos = remember {
         NumberFormat.getCurrencyInstance(Locale.forLanguageTag("es-CL")).apply {
@@ -67,7 +67,7 @@ fun DetalleProducto(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = hotRed)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = RojoClaro)
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
@@ -85,7 +85,7 @@ fun DetalleProducto(
                 modifier = Modifier
                     .padding(padding)
                     .fillMaxSize()
-                    .background(Brush.verticalGradient(listOf(hotRed, hotRed)))
+                    .background(Brush.verticalGradient(listOf(RojoClaro, RojoClaro)))
             ) {
                 LazyColumn(
                     modifier = Modifier
@@ -102,7 +102,7 @@ fun DetalleProducto(
                                 .height(280.dp)
                                 .shadow(10.dp, RoundedCornerShape(20.dp)),
                             shape = RoundedCornerShape(20.dp),
-                            colors = CardDefaults.cardColors(containerColor = white)
+                            colors = CardDefaults.cardColors(containerColor = blanco)
                         ) {
                             Box(
                                 modifier = Modifier
@@ -130,14 +130,14 @@ fun DetalleProducto(
                                 text = p.nombre,
                                 fontSize = 26.sp,
                                 fontWeight = FontWeight.ExtraBold,
-                                color = white,
+                                color = blanco,
                                 textAlign = TextAlign.Center
                             )
                             Spacer(Modifier.height(6.dp))
                             Text(
                                 text = formatoPesos.format(p.precio),
                                 fontSize = 24.sp,
-                                color = white,
+                                color = blanco,
                                 fontWeight = FontWeight.Bold
                             )
                         }
@@ -153,7 +153,7 @@ fun DetalleProducto(
                                 )
                             }
                             Spacer(Modifier.width(8.dp))
-                            Text("4.9 / 5", color = white)
+                            Text("4.9 / 5", color = blanco)
                         }
                     }
 
@@ -162,7 +162,7 @@ fun DetalleProducto(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .shadow(6.dp, RoundedCornerShape(16.dp)),
-                            colors = CardDefaults.cardColors(containerColor = white),
+                            colors = CardDefaults.cardColors(containerColor = blanco),
                             shape = RoundedCornerShape(16.dp)
                         ) {
                             Text(
@@ -182,7 +182,7 @@ fun DetalleProducto(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .shadow(6.dp, RoundedCornerShape(16.dp)),
-                            colors = CardDefaults.cardColors(containerColor = white),
+                            colors = CardDefaults.cardColors(containerColor = blanco),
                             shape = RoundedCornerShape(16.dp)
                         ) {
                             Column(Modifier.padding(16.dp)) {
@@ -221,11 +221,11 @@ fun DetalleProducto(
                                     .weight(1f)
                                     .height(50.dp),
                                 shape = RoundedCornerShape(10.dp),
-                                colors = ButtonDefaults.buttonColors(containerColor = white)
+                                colors = ButtonDefaults.buttonColors(containerColor = blanco)
                             ) {
                                 Text(
                                     "Agregar",
-                                    color = hotRed,
+                                    color = RojoClaro,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -236,11 +236,11 @@ fun DetalleProducto(
                                     .weight(1f)
                                     .height(50.dp),
                                 shape = RoundedCornerShape(10.dp),
-                                colors = ButtonDefaults.buttonColors(containerColor = white)
+                                colors = ButtonDefaults.buttonColors(containerColor = blanco)
                             ) {
                                 Text(
                                     "Ver carrito",
-                                    color = hotRed,
+                                    color = RojoClaro,
                                     fontWeight = FontWeight.Bold
                                 )
                             }

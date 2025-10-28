@@ -31,7 +31,7 @@ fun CompraExitosa(
 ) {
     val fechaActual = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.forLanguageTag("es-CL")).format(Date())
 
-    val rojoHot = Color(0xFFFF1E00)
+    val RojoClaro = Color(0xFFFF1E00)
     val blanco = Color.White
     val grisSuave = Color(0xFFF5F5F5)
 
@@ -52,7 +52,7 @@ fun CompraExitosa(
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = rojoHot
+                    containerColor = RojoClaro
                 )
             )
         }
@@ -62,7 +62,7 @@ fun CompraExitosa(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize()
-                .background(Brush.verticalGradient(listOf(rojoHot, rojoHot))),
+                .background(Brush.verticalGradient(listOf(RojoClaro, RojoClaro))),
             contentAlignment = Alignment.Center
         ) {
             Card(
@@ -84,7 +84,7 @@ fun CompraExitosa(
                     Icon(
                         imageVector = Icons.Filled.CheckCircle,
                         contentDescription = "Compra exitosa",
-                        tint = rojoHot,
+                        tint = RojoClaro,
                         modifier = Modifier
                             .size(90.dp)
                             .shadow(7.dp, RoundedCornerShape(50))
@@ -97,7 +97,7 @@ fun CompraExitosa(
                         style = MaterialTheme.typography.headlineSmall.copy(
                             fontWeight = FontWeight.ExtraBold,
                             fontSize = 25.sp,
-                            color = rojoHot
+                            color = RojoClaro
                         ),
                         textAlign = TextAlign.Center
                     )
@@ -154,7 +154,7 @@ fun CompraExitosa(
                                 .height(50.dp),
                             shape = RoundedCornerShape(10.dp),
                             border = ButtonDefaults.outlinedButtonBorder(enabled = true),
-                            colors = ButtonDefaults.outlinedButtonColors(contentColor = rojoHot)
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = RojoClaro)
                         ) {
                             Text("Ir al inicio", fontWeight = FontWeight.Bold, fontSize = 12.sp)
                         }
@@ -165,7 +165,7 @@ fun CompraExitosa(
                                 .weight(1f)
                                 .height(50.dp),
                             shape = RoundedCornerShape(10.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = rojoHot)
+                            colors = ButtonDefaults.buttonColors(containerColor = RojoClaro)
                         ) {
                             Text(
                                 "Seguir comprando",

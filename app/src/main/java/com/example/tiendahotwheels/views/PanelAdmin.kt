@@ -30,8 +30,7 @@ import java.util.*
 fun PanelAdministracion(navController: NavController, productoVM: ProductViewModel) {
     val productos by productoVM.catalogo.collectAsState(initial = emptyList())
 
-    val rojoHot = Color(0xFFFF1E00)
-    val rojoOscuro = Color(0xFFD90000)
+    val RojoClaro = Color(0xFFFF1E00)
     val blanco = Color.White
     val grisClaro = Color(0xFFF5F5F5)
 
@@ -52,7 +51,7 @@ fun PanelAdministracion(navController: NavController, productoVM: ProductViewMod
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = rojoHot
+                    containerColor = RojoClaro
                 ),
                 actions = {
                     IconButton(onClick = { navController.navigate("agregar_producto") }) {
@@ -70,7 +69,7 @@ fun PanelAdministracion(navController: NavController, productoVM: ProductViewMod
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                    Brush.verticalGradient(listOf(rojoHot, rojoOscuro))
+                    Brush.verticalGradient(listOf(RojoClaro))
                 )
                 .padding(padding)
         ) {
@@ -115,7 +114,7 @@ fun PanelAdministracion(navController: NavController, productoVM: ProductViewMod
 
                                 Text(
                                     text = "Precio: ${formatoPesos.format(p.precio)}",
-                                    color = rojoHot,
+                                    color = RojoClaro,
                                     fontWeight = FontWeight.Bold
                                 )
 

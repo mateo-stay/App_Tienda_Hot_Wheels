@@ -26,15 +26,15 @@ fun Registro(vm: AuthViewModel, onRegistered: () -> Unit) {
     var password by remember { mutableStateOf(TextFieldValue("")) }
     var mensaje by remember { mutableStateOf<String?>(null) }
 
-    val hotRed = Color(0xFFFF1E00)
-    val pureWhite = Color(0xFFFFFFFF)
+    val RojoClaro = Color(0xFFFF1E00)
+    val blanco = Color(0xFFFFFFFF)
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    colors = listOf(hotRed, hotRed)
+                    colors = listOf(RojoClaro, RojoClaro)
                 )
             ),
         contentAlignment = Alignment.Center
@@ -45,7 +45,7 @@ fun Registro(vm: AuthViewModel, onRegistered: () -> Unit) {
                 .fillMaxWidth(),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
             shape = RoundedCornerShape(20.dp),
-            colors = CardDefaults.cardColors(containerColor = pureWhite)
+            colors = CardDefaults.cardColors(containerColor = blanco)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -55,7 +55,7 @@ fun Registro(vm: AuthViewModel, onRegistered: () -> Unit) {
                     text = "Registro de Usuario",
                     fontSize = 30.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    color = hotRed,
+                    color = RojoClaro,
                     textAlign = TextAlign.Center
                 )
 
@@ -130,7 +130,7 @@ fun Registro(vm: AuthViewModel, onRegistered: () -> Unit) {
                         .fillMaxWidth()
                         .height(50.dp),
                     shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = hotRed)
+                    colors = ButtonDefaults.buttonColors(containerColor = RojoClaro)
                 ) {
                     Text(
                         text = "Registrar",

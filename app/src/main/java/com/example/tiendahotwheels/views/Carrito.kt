@@ -32,8 +32,8 @@ fun Carrito(
     val carrito = vm.carrito.collectAsState()
     val total by remember { derivedStateOf { vm.total() } }
 
-    val hotRed = Color(0xFFFF1E00)
-    val white = Color.White
+    val RojoClaro = Color(0xFFFF1E00)
+    val blanco = Color.White
 
     val formatoPesos = remember {
         NumberFormat.getCurrencyInstance(Locale.forLanguageTag("es-CL")).apply {
@@ -60,7 +60,7 @@ fun Carrito(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = hotRed)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = RojoClaro)
             )
         }
     ) { padding ->
@@ -69,7 +69,7 @@ fun Carrito(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize()
-                .background(Brush.verticalGradient(listOf(hotRed, hotRed)))
+                .background(Brush.verticalGradient(listOf(RojoClaro, RojoClaro)))
         ) {
             Column(
                 modifier = Modifier
@@ -102,7 +102,7 @@ fun Carrito(
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = RoundedCornerShape(16.dp),
                                 elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-                                colors = CardDefaults.cardColors(containerColor = white)
+                                colors = CardDefaults.cardColors(containerColor = blanco)
                             ) {
                                 Row(
                                     modifier = Modifier
@@ -125,7 +125,7 @@ fun Carrito(
                                         )
                                         Text(
                                             "Precio: ${formatoPesos.format(item.producto.precio * item.cantidad)}",
-                                            color = hotRed,
+                                            color = RojoClaro,
                                             fontWeight = FontWeight.Bold
                                         )
                                     }
@@ -179,14 +179,14 @@ fun Carrito(
                             modifier = Modifier.weight(1f),
                             colors = ButtonDefaults.buttonColors(containerColor = Color.White)
                         ) {
-                            Text("Finalizar compra", color = hotRed, fontWeight = FontWeight.Bold)
+                            Text("Finalizar compra", color = RojoClaro, fontWeight = FontWeight.Bold)
                         }
                         OutlinedButton(
                             onClick = { onFinalizarCompra(false) },
                             modifier = Modifier.weight(1f),
                             colors = ButtonDefaults.buttonColors(containerColor = Color.White)
                         ) {
-                            Text("Simular error", color = hotRed, fontWeight = FontWeight.Bold)
+                            Text("Simular error", color = RojoClaro, fontWeight = FontWeight.Bold)
                         }
                     }
                 }

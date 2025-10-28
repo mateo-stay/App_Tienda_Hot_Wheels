@@ -23,7 +23,7 @@ fun CompraFallida(
     onVolverCarrito: () -> Unit
 ) {
 
-    val Hotred = Color(0xFFFF1E00)
+    val RojoClaro = Color(0xFFFF1E00)
     val blanco = Color(0xFFFFFFFF)
 
     Scaffold(
@@ -37,7 +37,7 @@ fun CompraFallida(
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = Hotred
+                    containerColor = RojoClaro
                 )
             )
         }
@@ -48,7 +48,7 @@ fun CompraFallida(
                 .padding(padding)
                 .fillMaxSize()
                 .background(
-                    Brush.verticalGradient(colors = listOf(Hotred, Hotred))
+                    Brush.verticalGradient(colors = listOf(RojoClaro, RojoClaro))
                 ),
             contentAlignment = Alignment.Center
         ) {
@@ -71,7 +71,7 @@ fun CompraFallida(
                     Icon(
                         imageVector = Icons.Filled.Error,
                         contentDescription = "Compra fallida",
-                        tint = Hotred,
+                        tint = RojoClaro,
                         modifier = Modifier.size(90.dp)
                     )
 
@@ -82,7 +82,7 @@ fun CompraFallida(
                         style = MaterialTheme.typography.headlineSmall.copy(
                             fontWeight = FontWeight.ExtraBold,
                             fontSize = 25.sp,
-                            color = Hotred
+                            color = RojoClaro
                         ),
                         textAlign = TextAlign.Center
                     )
@@ -109,7 +109,7 @@ fun CompraFallida(
                                 .fillMaxWidth()
                                 .height(50.dp),
                             shape = RoundedCornerShape(8.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = Hotred)
+                            colors = ButtonDefaults.buttonColors(containerColor = RojoClaro)
                         ) {
                             Text("Intentar nuevamente", color = Color.White, fontSize = 15.sp)
                         }
@@ -123,7 +123,7 @@ fun CompraFallida(
                                 .height(50.dp),
                             shape = RoundedCornerShape(8.dp)
                         ) {
-                            Text("Volver al carrito", color = Hotred, fontSize = 15.sp)
+                            Text("Volver al carrito", color = RojoClaro, fontSize = 15.sp)
                         }
                     }
                 }

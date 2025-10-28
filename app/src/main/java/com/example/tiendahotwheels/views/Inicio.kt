@@ -41,9 +41,8 @@ fun Inicio(
     val productos = vm.catalogo.collectAsState()
     val usuario = authVM.usuarioActual.collectAsState().value
 
-    val hotRed = Color(0xFFFF1E00)
-    val darkRed = Color(0xFFD10000)
-    val white = Color.White
+    val RojoClaro = Color(0xFFFF1E00)
+    val blanco = Color.White
 
     val formatoPesos = remember {
         NumberFormat.getCurrencyInstance(Locale.forLanguageTag("es-CL")).apply {
@@ -92,7 +91,7 @@ fun Inicio(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = hotRed)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = RojoClaro)
             )
         }
     ) { padding ->
@@ -100,7 +99,7 @@ fun Inicio(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Brush.verticalGradient(listOf(hotRed, darkRed)))
+                .background(Brush.verticalGradient(listOf(RojoClaro)))
                 .padding(padding)
         ) {
             Column(modifier = Modifier.padding(18.dp)) {
@@ -124,13 +123,13 @@ fun Inicio(
                                     fontWeight = if (categoriaSeleccionada == cat)
                                         FontWeight.Bold else FontWeight.Normal,
                                     color = if (categoriaSeleccionada == cat)
-                                        hotRed else Color.White
+                                        RojoClaro else Color.White
                                 )
                             },
                             colors = FilterChipDefaults.filterChipColors(
                                 selectedContainerColor = Color.White,
-                                selectedLabelColor = hotRed,
-                                containerColor = hotRed.copy(alpha = 0.2f),
+                                selectedLabelColor = RojoClaro,
+                                containerColor = RojoClaro.copy(alpha = 0.2f),
                                 labelColor = Color.White
                             )
                         )
@@ -162,7 +161,7 @@ fun Inicio(
                                     .clickable { onSelectProduct(p.id) },
                                 shape = RoundedCornerShape(16.dp),
                                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                                colors = CardDefaults.cardColors(containerColor = white)
+                                colors = CardDefaults.cardColors(containerColor = blanco)
                             ) {
                                 Row(
                                     modifier = Modifier
@@ -196,7 +195,7 @@ fun Inicio(
                                         Text(
                                             text = formatoPesos.format(p.precio),
                                             style = MaterialTheme.typography.titleMedium.copy(
-                                                color = hotRed,
+                                                color = RojoClaro,
                                                 fontSize = 18.sp,
                                                 fontWeight = FontWeight.Bold
                                             )
@@ -231,7 +230,7 @@ fun Inicio(
                                         TextButton(
                                             onClick = { onSelectProduct(p.id) },
                                             modifier = Modifier.align(Alignment.End),
-                                            colors = ButtonDefaults.textButtonColors(contentColor = hotRed)
+                                            colors = ButtonDefaults.textButtonColors(contentColor = RojoClaro)
                                         ) {
                                             Text("Ver detalles →", fontWeight = FontWeight.Bold)
                                         }

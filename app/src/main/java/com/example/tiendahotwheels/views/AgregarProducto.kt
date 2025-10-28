@@ -25,7 +25,7 @@ fun AgregarProducto(navController: NavController) {
     var descripcion by remember { mutableStateOf("") }
     var imagenUrl by remember { mutableStateOf("") }
 
-    val rojoHot = Color(0xFFFF1E00)
+    val RojoClaro = Color(0xFFFF1E00)
     val blanco = Color(0xFFFFFFFF)
 
     Scaffold(
@@ -40,7 +40,7 @@ fun AgregarProducto(navController: NavController) {
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = rojoHot
+                    containerColor = RojoClaro
                 )
             )
         }
@@ -49,7 +49,7 @@ fun AgregarProducto(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                    Brush.verticalGradient(listOf(rojoHot, rojoHot))
+                    Brush.verticalGradient(listOf(RojoClaro, RojoClaro))
                 )
                 .padding(padding),
             contentAlignment = Alignment.TopCenter
@@ -71,7 +71,7 @@ fun AgregarProducto(navController: NavController) {
                     Text(
                         "Nuevo Producto",
                         fontSize = 22.sp,
-                        color = rojoHot,
+                        color = RojoClaro,
                         fontWeight = FontWeight.Bold
                     )
 
@@ -117,7 +117,7 @@ fun AgregarProducto(navController: NavController) {
                             navController.popBackStack()
                         },
                         modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(containerColor = rojoHot),
+                        colors = ButtonDefaults.buttonColors(containerColor = RojoClaro),
                         shape = RoundedCornerShape(10.dp)
                     ) {
                         Text(
