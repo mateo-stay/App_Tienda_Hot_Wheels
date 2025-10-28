@@ -94,7 +94,7 @@ fun Registro(vm: AuthViewModel, onRegistered: () -> Unit) {
                 OutlinedTextField(
                     value = rut,
                     onValueChange = { rut = it },
-                    label = { Text("RUT (Ej: 11.111.111-1)") },
+                    label = { Text("RUT (Ej: 11.111.111-k)") },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
