@@ -19,28 +19,28 @@ import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddProductScreen(navController: NavController) {
+fun AgregarProducto(navController: NavController) {
     var nombre by remember { mutableStateOf("") }
     var precio by remember { mutableStateOf("") }
     var descripcion by remember { mutableStateOf("") }
     var imagenUrl by remember { mutableStateOf("") }
 
-    val hotRed = Color(0xFFFF1E00)
-    val white = Color(0xFFFFFFFF)
+    val rojoHot = Color(0xFFFF1E00)
+    val blanco = Color(0xFFFFFFFF)
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        "Agregar producto",
+                        "Agregar Producto",
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center,
+                        textAlign = TextAlign.Center
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = hotRed
+                    containerColor = rojoHot
                 )
             )
         }
@@ -49,7 +49,7 @@ fun AddProductScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                    Brush.verticalGradient(listOf(hotRed, hotRed))
+                    Brush.verticalGradient(listOf(rojoHot, rojoHot))
                 )
                 .padding(padding),
             contentAlignment = Alignment.TopCenter
@@ -60,7 +60,7 @@ fun AddProductScreen(navController: NavController) {
                     .fillMaxWidth(),
                 shape = RoundedCornerShape(20.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                colors = CardDefaults.cardColors(containerColor = white)
+                colors = CardDefaults.cardColors(containerColor = blanco)
             ) {
                 Column(
                     modifier = Modifier
@@ -69,9 +69,10 @@ fun AddProductScreen(navController: NavController) {
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
-                        " Nuevo Producto",
+                        "Nuevo Producto",
                         fontSize = 22.sp,
-                        color = hotRed
+                        color = rojoHot,
+                        fontWeight = FontWeight.Bold
                     )
 
                     OutlinedTextField(
@@ -85,7 +86,7 @@ fun AddProductScreen(navController: NavController) {
                     OutlinedTextField(
                         value = precio,
                         onValueChange = { precio = it.filter { c -> c.isDigit() } },
-                        label = { Text("Precio") },
+                        label = { Text("Precio (en CLP)") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp)
@@ -111,17 +112,20 @@ fun AddProductScreen(navController: NavController) {
                     Spacer(Modifier.height(16.dp))
 
                     Button(
-                        onClick = { navController.popBackStack() },
+                        onClick = {
+                            // Aquí puedes implementar la lógica para guardar el producto
+                            navController.popBackStack()
+                        },
                         modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(containerColor = hotRed),
+                        colors = ButtonDefaults.buttonColors(containerColor = rojoHot),
                         shape = RoundedCornerShape(10.dp)
                     ) {
                         Text(
                             "Guardar",
                             color = Color.White,
+                            fontWeight = FontWeight.Bold
                         )
                     }
-
                 }
             }
         }

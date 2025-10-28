@@ -16,6 +16,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tiendahotwheels.viewmodel.AuthViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun InicioSesion(
@@ -26,29 +28,27 @@ fun InicioSesion(
     var email by remember { mutableStateOf(TextFieldValue("")) }
     var password by remember { mutableStateOf(TextFieldValue("")) }
     var error by remember { mutableStateOf<String?>(null) }
+    var cargando by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
 
     val hotRed = Color(0xFFFF1E00)
-    val darkRed = Color(0xFFD90000)
-    val pureWhite = Color(0xFFFFFFFF)
+    val white = Color.White
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(
-                Brush.verticalGradient(
-                    colors = listOf(hotRed, darkRed)
-                )
+                Brush.verticalGradient(colors = listOf(hotRed, hotRed))
             ),
         contentAlignment = Alignment.Center
     ) {
-
         Card(
             modifier = Modifier
                 .padding(24.dp)
                 .fillMaxWidth(),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
             shape = RoundedCornerShape(20.dp),
-            colors = CardDefaults.cardColors(containerColor = pureWhite)
+            colors = CardDefaults.cardColors(containerColor = white)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -56,7 +56,7 @@ fun InicioSesion(
             ) {
                 Text(
                     "Tienda Hot Wheels",
-                    fontSize = 35.sp,
+                    fontSize = 36.sp,
                     fontWeight = FontWeight.ExtraBold,
                     color = hotRed,
                     textAlign = TextAlign.Center
@@ -87,27 +87,49 @@ fun InicioSesion(
 
                 Button(
                     onClick = {
-                        val ok = vm.login(email.text, password.text)
-                        if (ok) onLoginOk(email.text)
-                        else error = "Correo o contraseña incorrectos."
+                        cargando = true
+                        scope.launch {
+                            delay(1000) // Simula carga (1 segundo)
+                            val ok = vm.login(email.text, password.text)
+                            cargando = false
+                            if (ok) {
+                                onLoginOk(email.text)
+                            } else {
+                                error = "Correo o contraseña incorrectos."
+                            }
+                        }
                     },
+                    enabled = !cargando,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = hotRed)
                 ) {
-                    Text(
-                        "Iniciar sesión",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 17.sp,
-                        color = Color.White
-                    )
+                    if (cargando) {
+                        CircularProgressIndicator(
+                            color = Color.White,
+                            strokeWidth = 2.dp,
+                            modifier = Modifier.size(22.dp)
+                        )
+                    } else {
+                        Text(
+                            "Iniciar sesión",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 17.sp,
+                            color = Color.White
+                        )
+                    }
                 }
 
                 error?.let {
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(it, color = MaterialTheme.colorScheme.error)
+                    Text(
+                        it,
+                        color = MaterialTheme.colorScheme.error,
+                        fontWeight = FontWeight.SemiBold,
+                        textAlign = TextAlign.Center
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -123,4 +145,3 @@ fun InicioSesion(
         }
     }
 }
-

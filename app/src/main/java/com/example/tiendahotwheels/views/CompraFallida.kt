@@ -18,27 +18,26 @@ import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PurchaseFailedScreen(
-    onRetry: () -> Unit,
-    onBackToCart: () -> Unit
+fun CompraFallida(
+    onIntentarDeNuevo: () -> Unit,
+    onVolverCarrito: () -> Unit
 ) {
 
-    val hotRed = Color(0xFFFF1E00)
-    val darkRed = Color(0xFFFF1E00)
-    val pureWhite = Color(0xFFFFFFFF)
+    val Hotred = Color(0xFFFF1E00)
+    val blanco = Color(0xFFFFFFFF)
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        "Error en la Compra",
+                        "Error en la compra",
                         color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = hotRed
+                    containerColor = Hotred
                 )
             )
         }
@@ -49,7 +48,7 @@ fun PurchaseFailedScreen(
                 .padding(padding)
                 .fillMaxSize()
                 .background(
-                    Brush.verticalGradient(colors = listOf(hotRed, darkRed))
+                    Brush.verticalGradient(colors = listOf(Hotred, Hotred))
                 ),
             contentAlignment = Alignment.Center
         ) {
@@ -60,7 +59,7 @@ fun PurchaseFailedScreen(
                     .fillMaxWidth(),
                 shape = RoundedCornerShape(20.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                colors = CardDefaults.cardColors(containerColor = pureWhite)
+                colors = CardDefaults.cardColors(containerColor = blanco)
             ) {
                 Column(
                     modifier = Modifier
@@ -71,19 +70,19 @@ fun PurchaseFailedScreen(
 
                     Icon(
                         imageVector = Icons.Filled.Error,
-                        contentDescription = "Compra rechazada",
-                        tint = hotRed,
+                        contentDescription = "Compra fallida",
+                        tint = Hotred,
                         modifier = Modifier.size(90.dp)
                     )
 
                     Spacer(Modifier.height(16.dp))
 
                     Text(
-                        text = "¡Compra rechazada!",
+                        text = "¡Compra fallida!",
                         style = MaterialTheme.typography.headlineSmall.copy(
                             fontWeight = FontWeight.ExtraBold,
                             fontSize = 25.sp,
-                            color = hotRed
+                            color = Hotred
                         ),
                         textAlign = TextAlign.Center
                     )
@@ -105,12 +104,12 @@ fun PurchaseFailedScreen(
 
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Button(
-                            onClick = onRetry,
+                            onClick = onIntentarDeNuevo,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(50.dp),
                             shape = RoundedCornerShape(8.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = hotRed)
+                            colors = ButtonDefaults.buttonColors(containerColor = Hotred)
                         ) {
                             Text("Intentar nuevamente", color = Color.White, fontSize = 15.sp)
                         }
@@ -118,13 +117,13 @@ fun PurchaseFailedScreen(
                         Spacer(Modifier.height(12.dp))
 
                         OutlinedButton(
-                            onClick = onBackToCart,
+                            onClick = onVolverCarrito,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(50.dp),
                             shape = RoundedCornerShape(8.dp)
                         ) {
-                            Text("Volver al carrito", color = hotRed, fontSize = 15.sp)
+                            Text("Volver al carrito", color = Hotred, fontSize = 15.sp)
                         }
                     }
                 }
@@ -132,4 +131,3 @@ fun PurchaseFailedScreen(
         }
     }
 }
-

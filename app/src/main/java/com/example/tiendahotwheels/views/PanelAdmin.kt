@@ -27,13 +27,13 @@ import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BackOfficeScreen(navController: NavController, productViewModel: ProductViewModel) {
-    val productos by productViewModel.catalogo.collectAsState(initial = emptyList())
+fun PanelAdministracion(navController: NavController, productoVM: ProductViewModel) {
+    val productos by productoVM.catalogo.collectAsState(initial = emptyList())
 
-    val hotRed = Color(0xFFFF1E00)
-    val darkRed = Color(0xFFFF1E00)
-    val white = Color(0xFFFFFFFF)
-    val lightGray = Color(0xFFF5F5F5)
+    val rojoHot = Color(0xFFFF1E00)
+    val rojoOscuro = Color(0xFFD90000)
+    val blanco = Color.White
+    val grisClaro = Color(0xFFF5F5F5)
 
     val formatoPesos = remember {
         NumberFormat.getCurrencyInstance(Locale.forLanguageTag("es-CL")).apply {
@@ -46,16 +46,16 @@ fun BackOfficeScreen(navController: NavController, productViewModel: ProductView
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        "Gestión de Productos",
+                        "Panel de Administración",
                         color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = hotRed
+                    containerColor = rojoHot
                 ),
                 actions = {
-                    IconButton(onClick = { navController.navigate("add_product") }) {
+                    IconButton(onClick = { navController.navigate("agregar_producto") }) {
                         Icon(
                             Icons.Default.Add,
                             contentDescription = "Agregar producto",
@@ -70,7 +70,7 @@ fun BackOfficeScreen(navController: NavController, productViewModel: ProductView
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                    Brush.verticalGradient(listOf(hotRed, darkRed))
+                    Brush.verticalGradient(listOf(rojoHot, rojoOscuro))
                 )
                 .padding(padding)
         ) {
@@ -80,7 +80,7 @@ fun BackOfficeScreen(navController: NavController, productViewModel: ProductView
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "No hay productos cargados aún",
+                        text = "No hay productos cargados aún.",
                         color = Color.White,
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.SemiBold
@@ -99,7 +99,7 @@ fun BackOfficeScreen(navController: NavController, productViewModel: ProductView
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(16.dp),
                             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                            colors = CardDefaults.cardColors(containerColor = white)
+                            colors = CardDefaults.cardColors(containerColor = blanco)
                         ) {
                             Column(Modifier.padding(16.dp)) {
 
@@ -115,7 +115,7 @@ fun BackOfficeScreen(navController: NavController, productViewModel: ProductView
 
                                 Text(
                                     text = "Precio: ${formatoPesos.format(p.precio)}",
-                                    color = hotRed,
+                                    color = rojoHot,
                                     fontWeight = FontWeight.Bold
                                 )
 
@@ -127,7 +127,7 @@ fun BackOfficeScreen(navController: NavController, productViewModel: ProductView
                                 )
 
                                 Spacer(Modifier.height(12.dp))
-                                HorizontalDivider(color = lightGray, thickness = 1.dp)
+                                HorizontalDivider(color = grisClaro, thickness = 1.dp)
                                 Spacer(Modifier.height(12.dp))
 
                                 Row(

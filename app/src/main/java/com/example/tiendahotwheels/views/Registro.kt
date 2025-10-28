@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.example.tiendahotwheels.viewmodel.AuthViewModel
 
 @Composable
-fun RegisterScreen(vm: AuthViewModel, onRegistered: () -> Unit) {
+fun Registro(vm: AuthViewModel, onRegistered: () -> Unit) {
     var nombre by remember { mutableStateOf(TextFieldValue("")) }
     var email by remember { mutableStateOf(TextFieldValue("")) }
     var direccion by remember { mutableStateOf(TextFieldValue("")) }
@@ -27,21 +27,18 @@ fun RegisterScreen(vm: AuthViewModel, onRegistered: () -> Unit) {
     var mensaje by remember { mutableStateOf<String?>(null) }
 
     val hotRed = Color(0xFFFF1E00)
-    val darkRed = Color(0xFFFF1E00)
     val pureWhite = Color(0xFFFFFFFF)
-
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    colors = listOf(hotRed, darkRed)
+                    colors = listOf(hotRed, hotRed)
                 )
             ),
         contentAlignment = Alignment.Center
     ) {
-
         Card(
             modifier = Modifier
                 .padding(24.dp)
@@ -55,7 +52,7 @@ fun RegisterScreen(vm: AuthViewModel, onRegistered: () -> Unit) {
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 32.dp)
             ) {
                 Text(
-                    "Registro de Usuario",
+                    text = "Registro de Usuario",
                     fontSize = 30.sp,
                     fontWeight = FontWeight.ExtraBold,
                     color = hotRed,
@@ -125,7 +122,7 @@ fun RegisterScreen(vm: AuthViewModel, onRegistered: () -> Unit) {
                             password.text
                         )
                         if (error == null) {
-                            mensaje = "Registro exitoso "
+                            mensaje = "Registro exitoso"
                             onRegistered()
                         } else mensaje = error
                     },
@@ -136,7 +133,7 @@ fun RegisterScreen(vm: AuthViewModel, onRegistered: () -> Unit) {
                     colors = ButtonDefaults.buttonColors(containerColor = hotRed)
                 ) {
                     Text(
-                        "Registrar",
+                        text = "Registrar",
                         fontWeight = FontWeight.Bold,
                         fontSize = 17.sp,
                         color = Color.White
@@ -148,13 +145,13 @@ fun RegisterScreen(vm: AuthViewModel, onRegistered: () -> Unit) {
                     Text(
                         it,
                         color = if (it.contains("exitoso"))
-                            Color(0xFF388E3C)
+                            Color(0xFF2E7D32) // verde éxito
                         else
-                            MaterialTheme.colorScheme.error
+                            MaterialTheme.colorScheme.error,
+                        textAlign = TextAlign.Center
                     )
                 }
             }
         }
     }
 }
-

@@ -24,16 +24,16 @@ import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CartScreen(
+fun Carrito(
     vm: ProductViewModel,
-    onCheckout: (success: Boolean) -> Unit,
-    onBack: () -> Unit
+    onFinalizarCompra: (exito: Boolean) -> Unit,
+    onVolver: () -> Unit
 ) {
     val carrito = vm.carrito.collectAsState()
     val total by remember { derivedStateOf { vm.total() } }
 
     val hotRed = Color(0xFFFF1E00)
-    val white = Color(0xFFFFFFFF)
+    val white = Color.White
 
     val formatoPesos = remember {
         NumberFormat.getCurrencyInstance(Locale.forLanguageTag("es-CL")).apply {
@@ -52,7 +52,7 @@ fun CartScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
+                    IconButton(onClick = onVolver) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Volver",
@@ -147,7 +147,7 @@ fun CartScreen(
                     HorizontalDivider(
                         thickness = 1.dp,
                         modifier = Modifier.padding(vertical = 8.dp),
-                        color = Color.White
+                        color = Color.White.copy(alpha = 0.7f)
                     )
 
                     Row(
@@ -175,18 +175,18 @@ fun CartScreen(
 
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         Button(
-                            onClick = { onCheckout(true) },
+                            onClick = { onFinalizarCompra(true) },
                             modifier = Modifier.weight(1f),
                             colors = ButtonDefaults.buttonColors(containerColor = Color.White)
                         ) {
-                            Text("Comprar", color = hotRed, fontWeight = FontWeight.Bold)
+                            Text("Finalizar compra", color = hotRed, fontWeight = FontWeight.Bold)
                         }
                         OutlinedButton(
-                            onClick = { onCheckout(false) },
+                            onClick = { onFinalizarCompra(false) },
                             modifier = Modifier.weight(1f),
                             colors = ButtonDefaults.buttonColors(containerColor = Color.White)
                         ) {
-                            Text("Simular Error", color = hotRed, fontWeight = FontWeight.Bold)
+                            Text("Simular error", color = hotRed, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
@@ -194,3 +194,4 @@ fun CartScreen(
         }
     }
 }
+

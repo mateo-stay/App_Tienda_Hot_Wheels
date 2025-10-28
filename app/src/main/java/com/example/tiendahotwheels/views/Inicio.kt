@@ -32,7 +32,7 @@ import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
+fun Inicio(
     vm: ProductViewModel,
     authVM: AuthViewModel,
     onSelectProduct: (String) -> Unit,
@@ -42,7 +42,7 @@ fun HomeScreen(
     val usuario = authVM.usuarioActual.collectAsState().value
 
     val hotRed = Color(0xFFFF1E00)
-    val darkRed = Color(0xFFCC1900)
+    val darkRed = Color(0xFFD10000)
     val white = Color.White
 
     val formatoPesos = remember {
@@ -70,9 +70,9 @@ fun HomeScreen(
                             color = Color.White,
                             textAlign = TextAlign.Center
                         )
-                        if (usuario != null) {
+                        usuario?.let {
                             Text(
-                                "Hola, ${usuario.nombre}",
+                                "Hola, ${it.nombre}",
                                 fontSize = 18.sp,
                                 color = Color.White.copy(alpha = 0.9f),
                                 fontWeight = FontWeight.Medium
@@ -245,4 +245,3 @@ fun HomeScreen(
         }
     }
 }
-

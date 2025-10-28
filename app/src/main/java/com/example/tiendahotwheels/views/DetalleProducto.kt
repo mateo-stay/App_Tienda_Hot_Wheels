@@ -25,22 +25,21 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.tiendahotwheels.viewmodel.ProductViewModel
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
-import java.util.Locale
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductDetailScreen(
+fun DetalleProducto(
     id: String,
     vm: ProductViewModel,
-    onBack: () -> Unit,
-    onGoCart: () -> Unit
+    onVolver: () -> Unit,
+    onVerCarrito: () -> Unit
 ) {
     val producto = vm.catalogo.collectAsState().value.find { it.id == id }
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
     val hotRed = Color(0xFFFF1E00)
-    val darkRed = Color(0xFFFF1E00)
     val white = Color.White
 
     val formatoPesos = remember {
@@ -54,13 +53,13 @@ fun ProductDetailScreen(
             TopAppBar(
                 title = {
                     Text(
-                        producto?.nombre ?: "Detalle del Producto",
+                        producto?.nombre ?: "Detalle del producto",
                         color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
+                    IconButton(onClick = onVolver) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Volver",
@@ -86,7 +85,7 @@ fun ProductDetailScreen(
                 modifier = Modifier
                     .padding(padding)
                     .fillMaxSize()
-                    .background(Brush.verticalGradient(listOf(hotRed, darkRed)))
+                    .background(Brush.verticalGradient(listOf(hotRed, hotRed)))
             ) {
                 LazyColumn(
                     modifier = Modifier
@@ -138,7 +137,7 @@ fun ProductDetailScreen(
                             Text(
                                 text = formatoPesos.format(p.precio),
                                 fontSize = 24.sp,
-                                color = Color.White,
+                                color = white,
                                 fontWeight = FontWeight.Bold
                             )
                         }
@@ -232,7 +231,7 @@ fun ProductDetailScreen(
                             }
 
                             OutlinedButton(
-                                onClick = onGoCart,
+                                onClick = onVerCarrito,
                                 modifier = Modifier
                                     .weight(1f)
                                     .height(50.dp),
