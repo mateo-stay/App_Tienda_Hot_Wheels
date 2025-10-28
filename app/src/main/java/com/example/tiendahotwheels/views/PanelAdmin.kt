@@ -34,9 +34,13 @@ fun PanelAdministracion(
 ) {
     val productos by productoVM.catalogo.collectAsState(initial = emptyList())
 
-    val rojoClaro = Color(0xFFFF1E00)
+    val rojoHot = Color(0xFFFF1E00)
+    val rojoOscuro = Color(0xFFD90000)
     val blanco = Color.White
     val grisClaro = Color(0xFFF5F5F5)
+    val fondoGradiente = Brush.verticalGradient(
+        colors = listOf(rojoHot, rojoOscuro)
+    )
 
     val formatoPesos = remember {
         NumberFormat.getCurrencyInstance(Locale.forLanguageTag("es-CL")).apply {
@@ -55,7 +59,7 @@ fun PanelAdministracion(
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = rojoClaro
+                    containerColor = rojoHot
                 ),
                 actions = {
                     Row {
@@ -86,9 +90,7 @@ fun PanelAdministracion(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(listOf(rojoClaro, rojoClaro))
-                )
+                .background(fondoGradiente)
                 .padding(padding)
         ) {
             if (productos.isEmpty()) {
@@ -132,7 +134,7 @@ fun PanelAdministracion(
 
                                 Text(
                                     text = "Precio: ${formatoPesos.format(p.precio)}",
-                                    color = rojoClaro,
+                                    color = rojoHot,
                                     fontWeight = FontWeight.Bold
                                 )
 
@@ -152,8 +154,7 @@ fun PanelAdministracion(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     OutlinedButton(
-                                        onClick = {
-                                        },
+                                        onClick = { /* Editar producto */ },
                                         modifier = Modifier.weight(1f),
                                         colors = ButtonDefaults.outlinedButtonColors(
                                             contentColor = Color.Black
@@ -166,8 +167,7 @@ fun PanelAdministracion(
                                     }
 
                                     OutlinedButton(
-                                        onClick = {
-                                        },
+                                        onClick = { /* Eliminar producto */ },
                                         modifier = Modifier.weight(1f),
                                         colors = ButtonDefaults.outlinedButtonColors(
                                             contentColor = Color.Black

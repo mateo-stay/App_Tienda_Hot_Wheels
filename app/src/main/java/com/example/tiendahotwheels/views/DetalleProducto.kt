@@ -39,8 +39,13 @@ fun DetalleProducto(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
-    val RojoClaro = Color(0xFFFF1E00)
+    val rojoHot = Color(0xFFFF1E00)
+    val rojoOscuro = Color(0xFFD90000)
     val blanco = Color.White
+
+    val fondoGradiente = Brush.verticalGradient(
+        colors = listOf(rojoHot, rojoOscuro)
+    )
 
     val formatoPesos = remember {
         NumberFormat.getCurrencyInstance(Locale.forLanguageTag("es-CL")).apply {
@@ -67,7 +72,7 @@ fun DetalleProducto(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = RojoClaro)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = rojoHot)
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
@@ -85,7 +90,7 @@ fun DetalleProducto(
                 modifier = Modifier
                     .padding(padding)
                     .fillMaxSize()
-                    .background(Brush.verticalGradient(listOf(RojoClaro, RojoClaro)))
+                    .background(fondoGradiente)
             ) {
                 LazyColumn(
                     modifier = Modifier
@@ -105,9 +110,7 @@ fun DetalleProducto(
                             colors = CardDefaults.cardColors(containerColor = blanco)
                         ) {
                             Box(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(Color.White),
+                                modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Image(
@@ -214,7 +217,7 @@ fun DetalleProducto(
                                 onClick = {
                                     vm.agregarAlCarrito(p)
                                     scope.launch {
-                                        snackbarHostState.showSnackbar("Producto agregado al carrito 🛒")
+                                        snackbarHostState.showSnackbar("Producto agregado al carrito")
                                     }
                                 },
                                 modifier = Modifier
@@ -225,7 +228,7 @@ fun DetalleProducto(
                             ) {
                                 Text(
                                     "Agregar",
-                                    color = RojoClaro,
+                                    color = rojoHot,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -236,11 +239,11 @@ fun DetalleProducto(
                                     .weight(1f)
                                     .height(50.dp),
                                 shape = RoundedCornerShape(10.dp),
-                                colors = ButtonDefaults.buttonColors(containerColor = blanco)
+                                colors = ButtonDefaults.outlinedButtonColors(contentColor = blanco)
                             ) {
                                 Text(
                                     "Ver carrito",
-                                    color = RojoClaro,
+                                    color = blanco,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -264,3 +267,4 @@ fun DetalleProducto(
         }
     }
 }
+

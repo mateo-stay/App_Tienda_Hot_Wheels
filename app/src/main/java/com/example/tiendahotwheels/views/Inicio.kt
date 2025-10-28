@@ -41,7 +41,8 @@ fun Inicio(
     val productos = vm.catalogo.collectAsState()
     val usuario = authVM.usuarioActual.collectAsState().value
 
-    val RojoClaro = Color(0xFFFF1E00)
+    val rojoHot = Color(0xFFFF1E00)
+    val rojoOscuro = Color(0xFFD90000)
     val blanco = Color.White
 
     val formatoPesos = remember {
@@ -91,7 +92,7 @@ fun Inicio(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = RojoClaro)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = rojoHot)
             )
         }
     ) { padding ->
@@ -99,7 +100,7 @@ fun Inicio(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Brush.verticalGradient(listOf(RojoClaro)))
+                .background(Brush.verticalGradient(listOf(rojoHot, rojoOscuro)))
                 .padding(padding)
         ) {
             Column(modifier = Modifier.padding(18.dp)) {
@@ -123,13 +124,13 @@ fun Inicio(
                                     fontWeight = if (categoriaSeleccionada == cat)
                                         FontWeight.Bold else FontWeight.Normal,
                                     color = if (categoriaSeleccionada == cat)
-                                        RojoClaro else Color.White
+                                        rojoHot else Color.White
                                 )
                             },
                             colors = FilterChipDefaults.filterChipColors(
                                 selectedContainerColor = Color.White,
-                                selectedLabelColor = RojoClaro,
-                                containerColor = RojoClaro.copy(alpha = 0.2f),
+                                selectedLabelColor = rojoHot,
+                                containerColor = rojoHot.copy(alpha = 0.2f),
                                 labelColor = Color.White
                             )
                         )
@@ -195,7 +196,7 @@ fun Inicio(
                                         Text(
                                             text = formatoPesos.format(p.precio),
                                             style = MaterialTheme.typography.titleMedium.copy(
-                                                color = RojoClaro,
+                                                color = rojoHot,
                                                 fontSize = 18.sp,
                                                 fontWeight = FontWeight.Bold
                                             )
@@ -230,7 +231,7 @@ fun Inicio(
                                         TextButton(
                                             onClick = { onSelectProduct(p.id) },
                                             modifier = Modifier.align(Alignment.End),
-                                            colors = ButtonDefaults.textButtonColors(contentColor = RojoClaro)
+                                            colors = ButtonDefaults.textButtonColors(contentColor = rojoHot)
                                         ) {
                                             Text("Ver detalles →", fontWeight = FontWeight.Bold)
                                         }

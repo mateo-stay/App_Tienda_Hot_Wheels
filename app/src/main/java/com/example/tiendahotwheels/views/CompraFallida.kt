@@ -22,8 +22,8 @@ fun CompraFallida(
     onIntentarDeNuevo: () -> Unit,
     onVolverCarrito: () -> Unit
 ) {
-
-    val RojoClaro = Color(0xFFFF1E00)
+    val rojoHot = Color(0xFFFF1E00)
+    val rojoOscuro = Color(0xFFD90000)
     val blanco = Color(0xFFFFFFFF)
 
     Scaffold(
@@ -37,7 +37,7 @@ fun CompraFallida(
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = RojoClaro
+                    containerColor = rojoHot
                 )
             )
         }
@@ -47,12 +47,9 @@ fun CompraFallida(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(colors = listOf(RojoClaro, RojoClaro))
-                ),
+                .background(Brush.verticalGradient(colors = listOf(rojoHot, rojoOscuro))),
             contentAlignment = Alignment.Center
         ) {
-
             Card(
                 modifier = Modifier
                     .padding(24.dp)
@@ -67,11 +64,10 @@ fun CompraFallida(
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-
                     Icon(
                         imageVector = Icons.Filled.Error,
                         contentDescription = "Compra fallida",
-                        tint = RojoClaro,
+                        tint = rojoHot,
                         modifier = Modifier.size(90.dp)
                     )
 
@@ -82,7 +78,7 @@ fun CompraFallida(
                         style = MaterialTheme.typography.headlineSmall.copy(
                             fontWeight = FontWeight.ExtraBold,
                             fontSize = 25.sp,
-                            color = RojoClaro
+                            color = rojoHot
                         ),
                         textAlign = TextAlign.Center
                     )
@@ -109,7 +105,7 @@ fun CompraFallida(
                                 .fillMaxWidth()
                                 .height(50.dp),
                             shape = RoundedCornerShape(8.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = RojoClaro)
+                            colors = ButtonDefaults.buttonColors(containerColor = rojoHot)
                         ) {
                             Text("Intentar nuevamente", color = Color.White, fontSize = 15.sp)
                         }
@@ -121,9 +117,12 @@ fun CompraFallida(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(50.dp),
-                            shape = RoundedCornerShape(8.dp)
+                            shape = RoundedCornerShape(8.dp),
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                contentColor = rojoHot
+                            )
                         ) {
-                            Text("Volver al carrito", color = RojoClaro, fontSize = 15.sp)
+                            Text("Volver al carrito", color = rojoHot, fontSize = 15.sp)
                         }
                     }
                 }
@@ -131,3 +130,4 @@ fun CompraFallida(
         }
     }
 }
+

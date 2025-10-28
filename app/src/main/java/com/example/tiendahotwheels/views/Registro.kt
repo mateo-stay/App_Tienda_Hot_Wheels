@@ -26,17 +26,17 @@ fun Registro(vm: AuthViewModel, onRegistered: () -> Unit) {
     var password by remember { mutableStateOf(TextFieldValue("")) }
     var mensaje by remember { mutableStateOf<String?>(null) }
 
-    val RojoClaro = Color(0xFFFF1E00)
-    val blanco = Color(0xFFFFFFFF)
+    val rojoHot = Color(0xFFFF1E00)
+    val rojoOscuro = Color(0xFFD90000)
+    val blanco = Color.White
+    val fondoGradiente = Brush.verticalGradient(
+        colors = listOf(rojoHot, rojoOscuro)
+    )
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                Brush.verticalGradient(
-                    colors = listOf(RojoClaro, RojoClaro)
-                )
-            ),
+            .background(fondoGradiente),
         contentAlignment = Alignment.Center
     ) {
         Card(
@@ -55,7 +55,7 @@ fun Registro(vm: AuthViewModel, onRegistered: () -> Unit) {
                     text = "Registro de Usuario",
                     fontSize = 30.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    color = RojoClaro,
+                    color = rojoHot,
                     textAlign = TextAlign.Center
                 )
 
@@ -94,7 +94,7 @@ fun Registro(vm: AuthViewModel, onRegistered: () -> Unit) {
                 OutlinedTextField(
                     value = rut,
                     onValueChange = { rut = it },
-                    label = { Text("RUT (Ej: 11.111.111-k)") },
+                    label = { Text("RUT (Ej: 11.111.111-K)") },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -130,7 +130,7 @@ fun Registro(vm: AuthViewModel, onRegistered: () -> Unit) {
                         .fillMaxWidth()
                         .height(50.dp),
                     shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = RojoClaro)
+                    colors = ButtonDefaults.buttonColors(containerColor = rojoHot)
                 ) {
                     Text(
                         text = "Registrar",
@@ -144,11 +144,12 @@ fun Registro(vm: AuthViewModel, onRegistered: () -> Unit) {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         it,
-                        color = if (it.contains("exitoso"))
-                            Color(0xFF2E7D32) // verde éxito
+                        color = if (it.contains("exitoso", ignoreCase = true))
+                            Color(0xFF2E7D32)
                         else
                             MaterialTheme.colorScheme.error,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Medium
                     )
                 }
             }

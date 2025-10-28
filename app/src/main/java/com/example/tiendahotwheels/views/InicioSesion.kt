@@ -31,15 +31,17 @@ fun InicioSesion(
     var cargando by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
-    val RojoClaro = Color(0xFFFF1E00)
+    val rojoHot = Color(0xFFFF1E00)
+    val rojoOscuro = Color(0xFFD90000)
     val blanco = Color.White
+    val fondoGradiente = Brush.verticalGradient(
+        colors = listOf(rojoHot, rojoOscuro)
+    )
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                Brush.verticalGradient(colors = listOf(RojoClaro,RojoClaro))
-            ),
+            .background(fondoGradiente),
         contentAlignment = Alignment.Center
     ) {
         Card(
@@ -58,7 +60,7 @@ fun InicioSesion(
                     "Tienda Hot Wheels",
                     fontSize = 36.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    color = RojoClaro,
+                    color = rojoHot,
                     textAlign = TextAlign.Center
                 )
 
@@ -104,7 +106,7 @@ fun InicioSesion(
                         .fillMaxWidth()
                         .height(50.dp),
                     shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = RojoClaro)
+                    colors = ButtonDefaults.buttonColors(containerColor = rojoHot)
                 ) {
                     if (cargando) {
                         CircularProgressIndicator(

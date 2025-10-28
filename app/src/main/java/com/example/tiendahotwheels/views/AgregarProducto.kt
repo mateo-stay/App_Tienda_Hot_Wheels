@@ -25,8 +25,9 @@ fun AgregarProducto(navController: NavController) {
     var descripcion by remember { mutableStateOf("") }
     var imagenUrl by remember { mutableStateOf("") }
 
-    val RojoClaro = Color(0xFFFF1E00)
-    val blanco = Color(0xFFFFFFFF)
+    val rojoHot = Color(0xFFFF1E00)
+    val rojoOscuro = Color(0xFFD90000)
+    val blanco = Color.White
 
     Scaffold(
         topBar = {
@@ -40,7 +41,7 @@ fun AgregarProducto(navController: NavController) {
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = RojoClaro
+                    containerColor = rojoHot
                 )
             )
         }
@@ -48,15 +49,13 @@ fun AgregarProducto(navController: NavController) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(listOf(RojoClaro, RojoClaro))
-                )
+                .background(Brush.verticalGradient(listOf(rojoHot, rojoOscuro)))
                 .padding(padding),
             contentAlignment = Alignment.TopCenter
         ) {
             Card(
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(24.dp)
                     .fillMaxWidth(),
                 shape = RoundedCornerShape(20.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
@@ -70,9 +69,10 @@ fun AgregarProducto(navController: NavController) {
                 ) {
                     Text(
                         "Nuevo Producto",
-                        fontSize = 22.sp,
-                        color = RojoClaro,
-                        fontWeight = FontWeight.Bold
+                        fontSize = 24.sp,
+                        color = rojoHot,
+                        fontWeight = FontWeight.ExtraBold,
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
                     )
 
                     OutlinedTextField(
@@ -113,17 +113,19 @@ fun AgregarProducto(navController: NavController) {
 
                     Button(
                         onClick = {
-                            // Aquí puedes implementar la lógica para guardar el producto
                             navController.popBackStack()
                         },
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(containerColor = RojoClaro),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = rojoHot),
                         shape = RoundedCornerShape(10.dp)
                     ) {
                         Text(
                             "Guardar",
                             color = Color.White,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
                         )
                     }
                 }
@@ -131,3 +133,4 @@ fun AgregarProducto(navController: NavController) {
         }
     }
 }
+

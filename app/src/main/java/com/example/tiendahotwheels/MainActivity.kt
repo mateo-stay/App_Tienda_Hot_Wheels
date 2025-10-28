@@ -38,11 +38,13 @@ fun AppTiendaHotWheels(authVM: AuthViewModel, productoVM: ProductViewModel) {
 
     NavHost(navController = nav, startDestination = "inicio_sesion") {
 
+        // 🟢 Inicio de sesión
         composable("inicio_sesion") {
             InicioSesion(
                 vm = authVM,
                 onLoginOk = { email ->
                     if (email == "admin@tienda.cl") {
+                        // ✅ Ruta corregida
                         nav.navigate("panel_administracion") {
                             popUpTo("inicio_sesion") { inclusive = true }
                         }
@@ -56,6 +58,7 @@ fun AppTiendaHotWheels(authVM: AuthViewModel, productoVM: ProductViewModel) {
             )
         }
 
+        // 🟣 Registro de usuario
         composable("registro_usuario") {
             Registro(
                 vm = authVM,
@@ -63,6 +66,7 @@ fun AppTiendaHotWheels(authVM: AuthViewModel, productoVM: ProductViewModel) {
             )
         }
 
+        // 🟡 Pantalla principal
         composable("inicio") {
             Inicio(
                 vm = productoVM,
@@ -77,7 +81,7 @@ fun AppTiendaHotWheels(authVM: AuthViewModel, productoVM: ProductViewModel) {
             )
         }
 
-
+        // 🟠 Detalle de producto
         composable(
             route = "detalle_producto/{id}",
             arguments = listOf(navArgument("id") { type = NavType.StringType })
@@ -91,6 +95,7 @@ fun AppTiendaHotWheels(authVM: AuthViewModel, productoVM: ProductViewModel) {
             )
         }
 
+        // 🛒 Carrito de compras
         composable("carrito_compras") {
             Carrito(
                 vm = productoVM,
@@ -106,6 +111,7 @@ fun AppTiendaHotWheels(authVM: AuthViewModel, productoVM: ProductViewModel) {
             )
         }
 
+        // 🟢 Compra exitosa
         composable(
             route = "compra_exitosa/{id}/{total}",
             arguments = listOf(
@@ -123,22 +129,26 @@ fun AppTiendaHotWheels(authVM: AuthViewModel, productoVM: ProductViewModel) {
             )
         }
 
-        composable(route = "compra_fallida") {
+        // 🔴 Compra fallida
+        composable("compra_fallida") {
             CompraFallida(
                 onIntentarDeNuevo = { nav.popBackStack() },
                 onVolverCarrito = { nav.navigate("carrito_compras") }
             )
         }
 
-        composable(route = "panel_administracion") {
+        // ⚙️ Panel de administración (ruta corregida)
+        composable("panel_administracion") {
             PanelAdministracion(
                 navController = nav,
                 productoVM = productoVM
             )
         }
 
-        composable(route = "agregar_producto") {
+        // 🧱 Agregar producto
+        composable("agregar_producto") {
             AgregarProducto(navController = nav)
         }
     }
 }
+

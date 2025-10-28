@@ -31,7 +31,8 @@ fun CompraExitosa(
 ) {
     val fechaActual = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.forLanguageTag("es-CL")).format(Date())
 
-    val RojoClaro = Color(0xFFFF1E00)
+    val rojoHot = Color(0xFFFF1E00)
+    val rojoOscuro = Color(0xFFD90000)
     val blanco = Color.White
     val grisSuave = Color(0xFFF5F5F5)
 
@@ -52,17 +53,16 @@ fun CompraExitosa(
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = RojoClaro
+                    containerColor = rojoHot
                 )
             )
         }
     ) { padding ->
-
         Box(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize()
-                .background(Brush.verticalGradient(listOf(RojoClaro, RojoClaro))),
+                .background(Brush.verticalGradient(listOf(rojoHot, rojoOscuro))),
             contentAlignment = Alignment.Center
         ) {
             Card(
@@ -80,11 +80,10 @@ fun CompraExitosa(
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-
                     Icon(
                         imageVector = Icons.Filled.CheckCircle,
                         contentDescription = "Compra exitosa",
-                        tint = RojoClaro,
+                        tint = rojoHot,
                         modifier = Modifier
                             .size(90.dp)
                             .shadow(7.dp, RoundedCornerShape(50))
@@ -97,7 +96,7 @@ fun CompraExitosa(
                         style = MaterialTheme.typography.headlineSmall.copy(
                             fontWeight = FontWeight.ExtraBold,
                             fontSize = 25.sp,
-                            color = RojoClaro
+                            color = rojoHot
                         ),
                         textAlign = TextAlign.Center
                     )
@@ -129,7 +128,10 @@ fun CompraExitosa(
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(Color.LightGray.copy(alpha = 0.2f), shape = RoundedCornerShape(12.dp))
+                            .background(
+                                Color.LightGray.copy(alpha = 0.2f),
+                                shape = RoundedCornerShape(12.dp)
+                            )
                             .padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
@@ -153,8 +155,7 @@ fun CompraExitosa(
                                 .weight(1f)
                                 .height(50.dp),
                             shape = RoundedCornerShape(10.dp),
-                            border = ButtonDefaults.outlinedButtonBorder(enabled = true),
-                            colors = ButtonDefaults.outlinedButtonColors(contentColor = RojoClaro)
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = rojoHot)
                         ) {
                             Text("Ir al inicio", fontWeight = FontWeight.Bold, fontSize = 12.sp)
                         }
@@ -165,12 +166,12 @@ fun CompraExitosa(
                                 .weight(1f)
                                 .height(50.dp),
                             shape = RoundedCornerShape(10.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = RojoClaro)
+                            colors = ButtonDefaults.buttonColors(containerColor = rojoHot)
                         ) {
                             Text(
                                 "Seguir comprando",
                                 color = Color.White,
-                                fontSize = 10.sp,
+                                fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold
                             )
                         }
@@ -182,3 +183,4 @@ fun CompraExitosa(
         }
     }
 }
+
