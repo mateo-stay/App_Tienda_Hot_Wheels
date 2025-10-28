@@ -13,6 +13,33 @@ class AuthViewModel(
     private val _usuarioActual = MutableStateFlow<Usuario?>(null)
     val usuarioActual = _usuarioActual.asStateFlow()
 
+    private fun validarRut(rut: String): Boolean {
+        val rutLimpio = rut.replace(".", "").replace("-", "").uppercase()
+        if (rutLimpio.length < 2) return false
+
+        val cuerpo = rutLimpio.dropLast(1)
+        val dv = rutLimpio.last()
+
+        if (!cuerpo.all { it.isDigit() }) return false
+
+        var suma = 0
+        var multiplicador = 2
+
+        for (i in cuerpo.reversed()) {
+            suma += (i.digitToInt()) * multiplicador
+            multiplicador = if (multiplicador < 7) multiplicador + 1 else 2
+        }
+
+        val resto = 11 - (suma % 11)
+        val dvEsperado = when (resto) {
+            11 -> '0'
+            10 -> 'K'
+            else -> resto.digitToChar()
+        }
+
+        return dv == dvEsperado
+    }
+
     fun registrar(
         nombre: String,
         email: String,
@@ -22,6 +49,10 @@ class AuthViewModel(
     ): String? {
         if (nombre.isBlank() || email.isBlank() || direccion.isBlank() || rut.isBlank() || password.isBlank()) {
             return "Por favor completa todos los campos requeridos."
+        }
+
+        if (!validarRut(rut)) {
+            return "El RUT ingresado no es válido. Verifica el formato y el dígito verificador."
         }
 
         val nuevoUsuario = Usuario(nombre, email, direccion, rut, password)
