@@ -49,10 +49,10 @@ fun HomeScreen(
         }
     }
 
-    // 🧭 Estado para filtrar categorías
+
     var categoriaSeleccionada by remember { mutableStateOf("Todos") }
 
-    // 🧮 Filtrado dinámico
+
     val productosFiltrados = remember(productos.value, categoriaSeleccionada) {
         if (categoriaSeleccionada == "Todos") productos.value
         else productos.value.filter { it.categoria.equals(categoriaSeleccionada, ignoreCase = true) }

@@ -136,7 +136,7 @@ fun ProductDetailScreen(
                             )
                             Spacer(Modifier.height(6.dp))
                             Text(
-                                text = formatoPesos.format(p.precio), // 💰 $2.500
+                                text = formatoPesos.format(p.precio),
                                 fontSize = 24.sp,
                                 color = Color.White,
                                 fontWeight = FontWeight.Bold

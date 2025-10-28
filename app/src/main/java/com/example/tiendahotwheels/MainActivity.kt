@@ -38,18 +38,18 @@ fun TiendaApp(authVM: AuthViewModel, productVM: ProductViewModel) {
 
     NavHost(navController = nav, startDestination = "login") {
 
-        // 🔐 Pantalla de Inicio de Sesión
+
         composable("login") {
             LoginScreen(
                 vm = authVM,
                 onLoginOk = { email ->
                     if (email == "admin@tienda.cl") {
-                        // Si el usuario es administrador
+
                         nav.navigate("backoffice") {
                             popUpTo("login") { inclusive = true }
                         }
                     } else {
-                        // Si es un usuario normal
+
                         nav.navigate("inicio") {
                             popUpTo("login") { inclusive = true }
                         }
@@ -59,7 +59,7 @@ fun TiendaApp(authVM: AuthViewModel, productVM: ProductViewModel) {
             )
         }
 
-        // 🧾 Pantalla de Registro
+
         composable("registro") {
             RegisterScreen(
                 vm = authVM,
@@ -67,7 +67,7 @@ fun TiendaApp(authVM: AuthViewModel, productVM: ProductViewModel) {
             )
         }
 
-        // 🏠 Pantalla de Inicio (Catálogo)
+
         composable("inicio") {
             HomeScreen(
                 vm = productVM,
@@ -82,7 +82,6 @@ fun TiendaApp(authVM: AuthViewModel, productVM: ProductViewModel) {
             )
         }
 
-        // 🔍 Detalle del Producto
         composable(
             route = "detalle/{id}",
             arguments = listOf(navArgument("id") { type = NavType.StringType })
@@ -96,7 +95,7 @@ fun TiendaApp(authVM: AuthViewModel, productVM: ProductViewModel) {
             )
         }
 
-        // 🛒 Carrito de Compras
+
         composable("carrito") {
             CartScreen(
                 vm = productVM,
@@ -112,7 +111,7 @@ fun TiendaApp(authVM: AuthViewModel, productVM: ProductViewModel) {
             )
         }
 
-        // ✅ Compra Exitosa
+
         composable(
             route = "compra_exitosa/{id}/{total}",
             arguments = listOf(
@@ -130,7 +129,7 @@ fun TiendaApp(authVM: AuthViewModel, productVM: ProductViewModel) {
             )
         }
 
-        // ❌ Compra Rechazada
+
         composable("compra_rechazada") {
             PurchaseFailedScreen(
                 onRetry = { nav.popBackStack() },
@@ -138,7 +137,7 @@ fun TiendaApp(authVM: AuthViewModel, productVM: ProductViewModel) {
             )
         }
 
-        // ⚙️ Panel de Administración (BackOffice)
+
         composable("backoffice") {
             BackOfficeScreen(
                 navController = nav,
@@ -146,7 +145,7 @@ fun TiendaApp(authVM: AuthViewModel, productVM: ProductViewModel) {
             )
         }
 
-        // ➕ Agregar Producto (solo visual)
+
         composable("agregar_producto") {
             AddProductScreen(nav)
         }
