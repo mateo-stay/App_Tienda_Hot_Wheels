@@ -43,7 +43,7 @@ fun AppTiendaHotWheels(authVM: AuthViewModel, productoVM: ProductViewModel) {
                 vm = authVM,
                 onLoginOk = { email ->
                     if (email == "admin@tienda.cl") {
-                        nav.navigate("panel_admin") {
+                        nav.navigate("panel_administracion") {
                             popUpTo("inicio_sesion") { inclusive = true }
                         }
                     } else {

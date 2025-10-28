@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -27,10 +28,17 @@ import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PanelAdministracion(navController: NavController, productoVM: ProductViewModel) {
+fun PanelAdministracion(
+    navController: NavController,
+    productoVM: ProductViewModel
+) {
     val productos by productoVM.catalogo.collectAsState(initial = emptyList())
 
+<<<<<<< Updated upstream
     val RojoClaro = Color(0xFFFF1E00)
+=======
+    val rojoClaro = Color(0xFFFF1E00)
+>>>>>>> Stashed changes
     val blanco = Color.White
     val grisClaro = Color(0xFFF5F5F5)
 
@@ -51,15 +59,33 @@ fun PanelAdministracion(navController: NavController, productoVM: ProductViewMod
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+<<<<<<< Updated upstream
                     containerColor = RojoClaro
+=======
+                    containerColor = rojoClaro
+>>>>>>> Stashed changes
                 ),
                 actions = {
-                    IconButton(onClick = { navController.navigate("agregar_producto") }) {
-                        Icon(
-                            Icons.Default.Add,
-                            contentDescription = "Agregar producto",
-                            tint = Color.Black
-                        )
+                    Row {
+                        IconButton(onClick = { navController.navigate("agregar_producto") }) {
+                            Icon(
+                                Icons.Default.Add,
+                                contentDescription = "Agregar producto",
+                                tint = Color.Black
+                            )
+                        }
+
+                        IconButton(onClick = {
+                            navController.navigate("inicio_sesion") {
+                                popUpTo("inicio_sesion") { inclusive = true }
+                            }
+                        }) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.Logout,
+                                contentDescription = "Cerrar sesión",
+                                tint = Color.Black
+                            )
+                        }
                     }
                 }
             )
@@ -69,7 +95,11 @@ fun PanelAdministracion(navController: NavController, productoVM: ProductViewMod
             modifier = Modifier
                 .fillMaxSize()
                 .background(
+<<<<<<< Updated upstream
                     Brush.verticalGradient(listOf(RojoClaro))
+=======
+                    Brush.verticalGradient(listOf(rojoClaro, rojoClaro))
+>>>>>>> Stashed changes
                 )
                 .padding(padding)
         ) {
@@ -114,7 +144,11 @@ fun PanelAdministracion(navController: NavController, productoVM: ProductViewMod
 
                                 Text(
                                     text = "Precio: ${formatoPesos.format(p.precio)}",
+<<<<<<< Updated upstream
                                     color = RojoClaro,
+=======
+                                    color = rojoClaro,
+>>>>>>> Stashed changes
                                     fontWeight = FontWeight.Bold
                                 )
 
