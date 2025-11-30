@@ -25,7 +25,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.tiendahotwheels.viewmodel.ProductViewModel
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
-import java.util.*
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,7 +35,10 @@ fun DetalleProducto(
     onVolver: () -> Unit,
     onVerCarrito: () -> Unit
 ) {
-    val producto = vm.catalogo.collectAsState().value.find { it.id == id }
+    // 🔁 Ahora usamos el StateFlow productos del ViewModel
+    val productos by vm.productos.collectAsState()
+    val producto = productos.find { it.id == id }
+
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
@@ -267,4 +270,5 @@ fun DetalleProducto(
         }
     }
 }
+
 

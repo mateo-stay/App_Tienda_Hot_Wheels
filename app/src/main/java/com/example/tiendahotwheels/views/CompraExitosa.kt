@@ -29,7 +29,9 @@ fun CompraExitosa(
     onSeguirComprando: () -> Unit,
     onIrInicio: () -> Unit
 ) {
-    val fechaActual = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.forLanguageTag("es-CL")).format(Date())
+    val formatoFecha = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale("es", "CL"))
+    formatoFecha.timeZone = TimeZone.getTimeZone("America/Santiago")
+    val fechaActual = formatoFecha.format(Date())
 
     val rojoHot = Color(0xFFFF1E00)
     val rojoOscuro = Color(0xFFD90000)

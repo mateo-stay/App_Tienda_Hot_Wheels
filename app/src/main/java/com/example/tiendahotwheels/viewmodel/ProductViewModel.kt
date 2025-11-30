@@ -1,111 +1,96 @@
 package com.example.tiendahotwheels.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.tiendahotwheels.data.ProductRepository
-import com.example.tiendahotwheels.model.ProductoCarrito
-import com.example.tiendahotwheels.model.Pedido
 import com.example.tiendahotwheels.model.Producto
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import java.util.UUID
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
-class ProductViewModel(context: Context) : ViewModel() {
+// 👇 Modelo interno para los items del carrito
+data class ItemCarrito(
+    val producto: Producto,
+    val cantidad: Int
+)
 
-    private val repo = ProductRepository(context)
+class ProductViewModel(
+    private val repository: ProductRepository
+) : ViewModel() {
 
-    private val _catalogo = MutableStateFlow<List<Producto>>(emptyList())
-    val catalogo = _catalogo.asStateFlow()
+    // 🎯 Catálogo de productos
+    private val _productos = MutableStateFlow<List<Producto>>(emptyList())
+    val productos: StateFlow<List<Producto>> = _productos
 
-    private val _carrito = MutableStateFlow<List<ProductoCarrito>>(emptyList())
-    val carrito = _carrito.asStateFlow()
+    // 🛒 Carrito de compras
+    private val _carrito = MutableStateFlow<List<ItemCarrito>>(emptyList())
+    val carrito: StateFlow<List<ItemCarrito>> = _carrito
+
+    // Estados de carga / error
+    private val _cargando = MutableStateFlow(false)
+    val cargando: StateFlow<Boolean> = _cargando
+
+    private val _error = MutableStateFlow<String?>(null)
+    val error: StateFlow<String?> = _error
 
     init {
-        _catalogo.value = repo.cargarProductos()
+        cargarProductos()
     }
 
+    fun cargarProductos() {
+        viewModelScope.launch {
+            try {
+                _cargando.value = true
+                _error.value = null
 
-    fun agregarAlCarrito(producto: Producto) {
-        val lista = _carrito.value.toMutableList()
-        val index = lista.indexOfFirst { it.producto.id == producto.id }
-
-
-        val productoCatalogo = _catalogo.value.find { it.id == producto.id }
-
-        if (productoCatalogo != null && productoCatalogo.stock > 0) {
-            if (index >= 0) {
-                val existente = lista[index]
-                if (existente.cantidad < productoCatalogo.stock) {
-                    lista[index] = existente.copy(cantidad = existente.cantidad + 1)
-                    productoCatalogo.stock -= 1
-                }
-            } else {
-                lista.add(ProductoCarrito(producto, 1))
-                productoCatalogo.stock -= 1
+                val lista = repository.cargarProductos()
+                _productos.value = lista
+            } catch (e: Exception) {
+                _error.value = e.message ?: "Error desconocido"
+            } finally {
+                _cargando.value = false
             }
-            _carrito.value = lista
-            _catalogo.value = _catalogo.value.toList()
         }
     }
 
-
-    fun eliminarDelCarrito(id: String) {
-        val lista = _carrito.value.toMutableList()
-        val index = lista.indexOfFirst { it.producto.id == id }
+    // 🛒 Agregar producto al carrito
+    fun agregarAlCarrito(producto: Producto) {
+        val listaActual = _carrito.value.toMutableList()
+        val index = listaActual.indexOfFirst { it.producto.id == producto.id }
 
         if (index >= 0) {
-            val item = lista[index]
-            val productoCatalogo = _catalogo.value.find { it.id == id }
+            val existente = listaActual[index]
+            listaActual[index] = existente.copy(cantidad = existente.cantidad + 1)
+        } else {
+            listaActual.add(ItemCarrito(producto = producto, cantidad = 1))
+        }
 
+        _carrito.value = listaActual
+    }
+
+    // ❌ Eliminar producto del carrito (por id)
+    fun eliminarDelCarrito(idProducto: String) {
+        val listaActual = _carrito.value.toMutableList()
+        val index = listaActual.indexOfFirst { it.producto.id == idProducto }
+
+        if (index >= 0) {
+            val item = listaActual[index]
             if (item.cantidad > 1) {
-                lista[index] = item.copy(cantidad = item.cantidad - 1)
+                listaActual[index] = item.copy(cantidad = item.cantidad - 1)
             } else {
-                lista.removeAt(index)
+                listaActual.removeAt(index)
             }
-
-
-            productoCatalogo?.stock = (productoCatalogo?.stock ?: 0) + 1
-
-            _carrito.value = lista
-            _catalogo.value = _catalogo.value.toList()
+            _carrito.value = listaActual
         }
     }
 
-    fun cambiarCantidad(id: String, nuevaCantidad: Int) {
-        _carrito.value = _carrito.value.map {
-            if (it.producto.id == id)
-                it.copy(cantidad = nuevaCantidad.coerceAtLeast(1))
-            else it
-        }
+    // 💰 Total del carrito
+    fun total(): Double {
+        return _carrito.value.sumOf { it.producto.precio * it.cantidad }
     }
 
-    fun total(): Double = _carrito.value.sumOf { it.producto.precio * it.cantidad }
-
-    fun vaciarCarrito() {
-
-        _carrito.value.forEach { item ->
-            val productoCatalogo = _catalogo.value.find { it.id == item.producto.id }
-            productoCatalogo?.stock = (productoCatalogo?.stock ?: 0) + item.cantidad
-        }
+    // Opcional: limpiar carrito después de compra
+    fun limpiarCarrito() {
         _carrito.value = emptyList()
     }
-
-    fun checkout(simularFallo: Boolean = false): Pedido? {
-        if (simularFallo || _carrito.value.isEmpty()) return null
-
-        val pedido = Pedido(
-            id = UUID.randomUUID().toString(),
-            items = _carrito.value,
-            total = total(),
-            emailUsuario = "cliente@demo.cl"
-        )
-
-        vaciarCarrito()
-        return pedido
-    }
-
-    fun enCarrito(id: String): Boolean = _carrito.value.any { it.producto.id == id }
-
-    fun cantidadProducto(id: String): Int =
-        _carrito.value.find { it.producto.id == id }?.cantidad ?: 0
 }

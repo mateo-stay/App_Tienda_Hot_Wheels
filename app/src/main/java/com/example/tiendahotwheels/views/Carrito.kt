@@ -9,7 +9,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -20,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tiendahotwheels.viewmodel.ProductViewModel
 import java.text.NumberFormat
-import java.util.*
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,18 +31,17 @@ fun Carrito(
     onFinalizarCompra: (exito: Boolean) -> Unit,
     onVolver: () -> Unit
 ) {
-    val carrito = vm.carrito.collectAsState()
-    val total by remember { derivedStateOf { vm.total() } }
+    // ✅ StateFlow → State
+    val carrito by vm.carrito.collectAsState()
+    val total = vm.total()
 
     val rojoHot = Color(0xFFFF1E00)
     val rojoOscuro = Color(0xFFD90000)
     val blanco = Color.White
 
-    val formatoPesos = remember {
-        NumberFormat.getCurrencyInstance(Locale.forLanguageTag("es-CL")).apply {
-            maximumFractionDigits = 0
-        }
-    }
+    val formatoPesos = NumberFormat.getCurrencyInstance(
+        Locale.forLanguageTag("es-CL")
+    ).apply { maximumFractionDigits = 0 }
 
     Scaffold(
         topBar = {
@@ -77,7 +78,7 @@ fun Carrito(
                     .padding(16.dp)
                     .fillMaxSize()
             ) {
-                if (carrito.value.isEmpty()) {
+                if (carrito.isEmpty()) {
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
@@ -98,7 +99,8 @@ fun Carrito(
                             .padding(bottom = 8.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        items(carrito.value) { item ->
+                        // ✅ ahora usamos items(carrito) directamente
+                        items(carrito) { item ->
                             Card(
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = RoundedCornerShape(16.dp),
@@ -126,7 +128,11 @@ fun Carrito(
                                             fontSize = 13.sp
                                         )
                                         Text(
-                                            "Subtotal: ${formatoPesos.format(item.producto.precio * item.cantidad)}",
+                                            "Subtotal: ${
+                                                formatoPesos.format(
+                                                    item.producto.precio * item.cantidad
+                                                )
+                                            }",
                                             color = rojoHot,
                                             fontWeight = FontWeight.Bold
                                         )
@@ -175,7 +181,10 @@ fun Carrito(
 
                     Spacer(Modifier.height(16.dp))
 
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
                         Button(
                             onClick = { onFinalizarCompra(true) },
                             modifier = Modifier.weight(1f),

@@ -113,6 +113,7 @@ fun AgregarProducto(navController: NavController) {
 
                     Button(
                         onClick = {
+                            // Por ahora solo vuelve; no guarda en backend
                             navController.popBackStack()
                         },
                         modifier = Modifier
@@ -133,4 +134,5 @@ fun AgregarProducto(navController: NavController) {
         }
     }
 }
+
 

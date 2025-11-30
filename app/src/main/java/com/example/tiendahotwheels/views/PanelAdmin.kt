@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.tiendahotwheels.viewmodel.ProductViewModel
 import java.text.NumberFormat
-import java.util.*
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,7 +32,8 @@ fun PanelAdministracion(
     navController: NavController,
     productoVM: ProductViewModel
 ) {
-    val productos by productoVM.catalogo.collectAsState(initial = emptyList())
+    // 🔁 Ahora usamos productos del ViewModel nuevo
+    val productos by productoVM.productos.collectAsState()
 
     val rojoHot = Color(0xFFFF1E00)
     val rojoOscuro = Color(0xFFD90000)
@@ -141,8 +142,11 @@ fun PanelAdministracion(
                                 Spacer(Modifier.height(4.dp))
 
                                 Text(
-                                    text = p.descripcion.take(120) + if (p.descripcion.length > 120) "..." else "",
-                                    style = MaterialTheme.typography.bodyMedium.copy(color = Color.DarkGray)
+                                    text = p.descripcion.take(120) +
+                                            if (p.descripcion.length > 120) "..." else "",
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                        color = Color.DarkGray
+                                    )
                                 )
 
                                 Spacer(Modifier.height(12.dp))
@@ -154,27 +158,33 @@ fun PanelAdministracion(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     OutlinedButton(
-                                        onClick = { /* Editar producto */ },
+                                        onClick = { /* TODO: Editar producto */ },
                                         modifier = Modifier.weight(1f),
                                         colors = ButtonDefaults.outlinedButtonColors(
                                             contentColor = Color.Black
                                         ),
                                         shape = RoundedCornerShape(8.dp)
                                     ) {
-                                        Icon(Icons.Default.Edit, contentDescription = "Editar")
+                                        Icon(
+                                            Icons.Default.Edit,
+                                            contentDescription = "Editar"
+                                        )
                                         Spacer(Modifier.width(4.dp))
                                         Text("Editar")
                                     }
 
                                     OutlinedButton(
-                                        onClick = { /* Eliminar producto */ },
+                                        onClick = { /* TODO: Eliminar producto */ },
                                         modifier = Modifier.weight(1f),
                                         colors = ButtonDefaults.outlinedButtonColors(
                                             contentColor = Color.Black
                                         ),
                                         shape = RoundedCornerShape(8.dp)
                                     ) {
-                                        Icon(Icons.Default.Delete, contentDescription = "Eliminar")
+                                        Icon(
+                                            Icons.Default.Delete,
+                                            contentDescription = "Eliminar"
+                                        )
                                         Spacer(Modifier.width(4.dp))
                                         Text("Eliminar")
                                     }

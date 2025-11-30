@@ -9,8 +9,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -28,7 +28,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.tiendahotwheels.viewmodel.ProductViewModel
 import com.example.tiendahotwheels.viewmodel.AuthViewModel
 import java.text.NumberFormat
-import java.util.*
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,7 +38,7 @@ fun Inicio(
     onSelectProduct: (String) -> Unit,
     onLogout: () -> Unit
 ) {
-    val productos = vm.catalogo.collectAsState()
+    val productos by vm.productos.collectAsState()
     val usuario = authVM.usuarioActual.collectAsState().value
 
     val rojoHot = Color(0xFFFF1E00)
@@ -53,9 +53,9 @@ fun Inicio(
 
     var categoriaSeleccionada by remember { mutableStateOf("Todos") }
 
-    val productosFiltrados = remember(productos.value, categoriaSeleccionada) {
-        if (categoriaSeleccionada == "Todos") productos.value
-        else productos.value.filter { it.categoria.equals(categoriaSeleccionada, ignoreCase = true) }
+    val productosFiltrados = remember(productos, categoriaSeleccionada) {
+        if (categoriaSeleccionada == "Todos") productos
+        else productos.filter { it.categoria.equals(categoriaSeleccionada, ignoreCase = true) }
     }
 
     Scaffold(
@@ -147,7 +147,9 @@ fun Inicio(
                         Text(
                             "No hay productos disponibles",
                             color = Color.White,
-                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
+                            style = MaterialTheme.typography.titleMedium.copy(
+                                fontWeight = FontWeight.SemiBold
+                            )
                         )
                     }
                 } else {
@@ -221,7 +223,9 @@ fun Inicio(
 
                                         Text(
                                             text = p.descripcion,
-                                            style = MaterialTheme.typography.bodySmall.copy(color = Color.DarkGray),
+                                            style = MaterialTheme.typography.bodySmall.copy(
+                                                color = Color.DarkGray
+                                            ),
                                             maxLines = 2,
                                             overflow = TextOverflow.Ellipsis
                                         )
@@ -231,9 +235,14 @@ fun Inicio(
                                         TextButton(
                                             onClick = { onSelectProduct(p.id) },
                                             modifier = Modifier.align(Alignment.End),
-                                            colors = ButtonDefaults.textButtonColors(contentColor = rojoHot)
+                                            colors = ButtonDefaults.textButtonColors(
+                                                contentColor = rojoHot
+                                            )
                                         ) {
-                                            Text("Ver detalles →", fontWeight = FontWeight.Bold)
+                                            Text(
+                                                "Ver detalles →",
+                                                fontWeight = FontWeight.Bold
+                                            )
                                         }
                                     }
                                 }
