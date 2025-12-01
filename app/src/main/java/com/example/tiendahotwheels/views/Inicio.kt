@@ -172,14 +172,32 @@ fun Inicio(
                                         .fillMaxWidth(),
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Image(
-                                        painter = rememberAsyncImagePainter(p.imagen),
-                                        contentDescription = p.nombre,
-                                        contentScale = ContentScale.Crop,
-                                        modifier = Modifier
-                                            .size(100.dp)
-                                            .clip(RoundedCornerShape(12.dp))
-                                    )
+                                    if (!p.imagenUrl.isNullOrBlank()) {
+                                        Image(
+                                            painter = rememberAsyncImagePainter(p.imagenUrl),
+                                            contentDescription = p.nombre,
+                                            contentScale = ContentScale.Crop,
+                                            modifier = Modifier
+                                                .size(100.dp)
+                                                .clip(RoundedCornerShape(12.dp))
+                                        )
+                                    } else {
+                                        // Placeholder cuando no hay URL
+                                        Box(
+                                            modifier = Modifier
+                                                .size(100.dp)
+                                                .clip(RoundedCornerShape(12.dp))
+                                                .background(Color.LightGray),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(
+                                                "Sin imagen",
+                                                fontSize = 10.sp,
+                                                color = Color.DarkGray,
+                                                textAlign = TextAlign.Center
+                                            )
+                                        }
+                                    }
 
                                     Spacer(Modifier.width(12.dp))
 

@@ -3,9 +3,9 @@ package com.example.tiendahotwheels.model
 data class Producto(
     val id: String,
     val nombre: String,
-    val precio: Double,
     val descripcion: String,
-    val imagen: String,
+    val precio: Double,
     val categoria: String,
-    var stock: Int
+    val imagenUrl: String,   // 👈 solo URL, nada de Int
+    val stock: Int
 )

@@ -5,10 +5,9 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object ApiClient {
+object CarQueryApiClient {
 
-    // Emulador → PC host
-    private const val BASE_URL = "http://10.0.2.2:8080/"
+    private const val BASE_URL = "https://www.carqueryapi.com/"
 
     private val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
@@ -18,11 +17,12 @@ object ApiClient {
         .addInterceptor(logging)
         .build()
 
-    private val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .client(client)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    val api: HotWheelsApi = retrofit.create(HotWheelsApi::class.java)
+    val api: CarQueryApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(CarQueryApiService::class.java)
+    }
 }

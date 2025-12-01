@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.tiendahotwheels.data.AuthRepository
 import com.example.tiendahotwheels.data.ProductRepository
 import com.example.tiendahotwheels.ui.theme.TiendaHotWheelsTheme
 import com.example.tiendahotwheels.viewmodel.AuthViewModel
@@ -20,8 +21,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val authVM = AuthViewModel()
-        val productRepository = ProductRepository(this)
+        // Repositorios basados en API
+        val authRepository = AuthRepository(this)          // 👈 PASAMOS context
+        val authVM = AuthViewModel(authRepository)
+
+        // Pasamos también authRepository al repositorio de productos
+        val productRepository = ProductRepository(this, authRepository)
         val productVM = ProductViewModel(productRepository)
 
         setContent {
@@ -43,7 +48,6 @@ fun AppTiendaHotWheels(
 
     NavHost(navController = nav, startDestination = "inicio_sesion") {
 
-        // 🟢 Inicio de sesión
         composable("inicio_sesion") {
             InicioSesion(
                 vm = authVM,
@@ -62,7 +66,6 @@ fun AppTiendaHotWheels(
             )
         }
 
-        // 🟣 Registro
         composable("registro_usuario") {
             Registro(
                 vm = authVM,
@@ -70,7 +73,6 @@ fun AppTiendaHotWheels(
             )
         }
 
-        // 🟡 Inicio (lista de productos)
         composable("inicio") {
             Inicio(
                 vm = productVM,
@@ -85,7 +87,6 @@ fun AppTiendaHotWheels(
             )
         }
 
-        // 🟠 Detalle de producto
         composable(
             route = "detalle_producto/{id}",
             arguments = listOf(
@@ -101,16 +102,13 @@ fun AppTiendaHotWheels(
             )
         }
 
-        // 🛒 Carrito
         composable("carrito_compras") {
             Carrito(
                 vm = productVM,
                 onFinalizarCompra = { exitoso ->
                     if (exitoso) {
-                        // Generamos un ID simple y usamos el total desde el ViewModel
                         val id = System.currentTimeMillis().toString()
                         val totalCompra = productVM.total()
-
                         nav.navigate("compra_exitosa/$id/$totalCompra")
                     } else {
                         nav.navigate("compra_fallida")
@@ -120,7 +118,6 @@ fun AppTiendaHotWheels(
             )
         }
 
-        // ✅ Compra exitosa
         composable(
             route = "compra_exitosa/{id}/{total}",
             arguments = listOf(
@@ -139,7 +136,6 @@ fun AppTiendaHotWheels(
             )
         }
 
-        // ❌ Compra fallida
         composable("compra_fallida") {
             CompraFallida(
                 onIntentarDeNuevo = { nav.popBackStack() },
@@ -147,7 +143,6 @@ fun AppTiendaHotWheels(
             )
         }
 
-        // ⚙️ Panel admin
         composable("panel_administracion") {
             PanelAdministracion(
                 navController = nav,
@@ -155,9 +150,26 @@ fun AppTiendaHotWheels(
             )
         }
 
-        // ➕ Agregar producto
         composable("agregar_producto") {
-            AgregarProducto(navController = nav)
+            AgregarProducto(
+                navController = nav,
+                productoVM = productVM
+            )
+        }
+
+        composable(
+            route = "editar_producto/{id}",
+            arguments = listOf(
+                navArgument("id") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val idStr = backStackEntry.arguments?.getString("id") ?: return@composable
+
+            EditarProducto(
+                navController = nav,
+                productoVM = productVM,
+                productoId = idStr
+            )
         }
     }
 }

@@ -18,13 +18,21 @@ import androidx.compose.ui.unit.sp
 import com.example.tiendahotwheels.viewmodel.AuthViewModel
 
 @Composable
-fun Registro(vm: AuthViewModel, onRegistered: () -> Unit) {
+fun Registro(
+    vm: AuthViewModel,
+    onRegistered: () -> Unit
+) {
     var nombre by remember { mutableStateOf(TextFieldValue("")) }
     var email by remember { mutableStateOf(TextFieldValue("")) }
     var direccion by remember { mutableStateOf(TextFieldValue("")) }
     var rut by remember { mutableStateOf(TextFieldValue("")) }
     var password by remember { mutableStateOf(TextFieldValue("")) }
+
+    // mensaje local para mostrar éxito o error
     var mensaje by remember { mutableStateOf<String?>(null) }
+
+    // usamos el estado de carga del ViewModel
+    val cargando by vm.cargando.collectAsState()
 
     val rojoHot = Color(0xFFFF1E00)
     val rojoOscuro = Color(0xFFD90000)
@@ -114,30 +122,44 @@ fun Registro(vm: AuthViewModel, onRegistered: () -> Unit) {
 
                 Button(
                     onClick = {
-                        val error = vm.registrar(
-                            nombre.text,
-                            email.text,
-                            direccion.text,
-                            rut.text,
-                            password.text
-                        )
-                        if (error == null) {
-                            mensaje = "Registro exitoso"
-                            onRegistered()
-                        } else mensaje = error
+                        mensaje = null
+                        vm.registrar(
+                            nombre = nombre.text,
+                            email = email.text,
+                            direccion = direccion.text,
+                            rut = rut.text,
+                            password = password.text
+                        ) { errorMsg ->
+                            // callback desde el ViewModel
+                            if (errorMsg == null) {
+                                mensaje = "Registro exitoso"
+                                onRegistered()
+                            } else {
+                                mensaje = errorMsg
+                            }
+                        }
                     },
+                    enabled = !cargando,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = rojoHot)
                 ) {
-                    Text(
-                        text = "Registrar",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 17.sp,
-                        color = Color.White
-                    )
+                    if (cargando) {
+                        CircularProgressIndicator(
+                            color = Color.White,
+                            strokeWidth = 2.dp,
+                            modifier = Modifier.size(22.dp)
+                        )
+                    } else {
+                        Text(
+                            text = "Registrar",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 17.sp,
+                            color = Color.White
+                        )
+                    }
                 }
 
                 mensaje?.let {

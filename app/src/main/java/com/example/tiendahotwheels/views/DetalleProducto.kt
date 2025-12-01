@@ -35,9 +35,12 @@ fun DetalleProducto(
     onVolver: () -> Unit,
     onVerCarrito: () -> Unit
 ) {
-    // 🔁 Ahora usamos el StateFlow productos del ViewModel
     val productos by vm.productos.collectAsState()
     val producto = productos.find { it.id == id }
+
+    // 🔥 Estados de la API externa (CarQuery)
+    val carInfo by vm.carInfo.collectAsState()
+    val cargandoCarInfo by vm.cargandoCarInfo.collectAsState()
 
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -83,6 +86,11 @@ fun DetalleProducto(
 
         producto?.let { p ->
 
+            // 👇 Cuando se carga el producto, disparamos la consulta a CarQuery
+            LaunchedEffect(p.id) {
+                vm.cargarFichaTecnica(p)
+            }
+
             val opiniones = listOf(
                 "Luis" to "Excelente modelo, muy detallado.",
                 "Camila" to "Buena calidad, llegó rápido.",
@@ -103,6 +111,7 @@ fun DetalleProducto(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
 
+                    // IMAGEN
                     item {
                         Card(
                             modifier = Modifier
@@ -113,23 +122,34 @@ fun DetalleProducto(
                             colors = CardDefaults.cardColors(containerColor = blanco)
                         ) {
                             Box(
-                                modifier = Modifier.fillMaxSize(),
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(12.dp)
+                                    .clip(RoundedCornerShape(16.dp)),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Image(
-                                    painter = rememberAsyncImagePainter(p.imagen),
-                                    contentDescription = p.nombre,
-                                    contentScale = ContentScale.Fit,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .fillMaxHeight()
-                                        .padding(12.dp)
-                                        .clip(RoundedCornerShape(16.dp))
-                                )
+                                if (p.imagenUrl.isNotBlank()) {
+                                    Image(
+                                        painter = rememberAsyncImagePainter(p.imagenUrl),
+                                        contentDescription = p.nombre,
+                                        contentScale = ContentScale.Fit,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .fillMaxHeight()
+                                    )
+                                } else {
+                                    Text(
+                                        "Sin imagen",
+                                        color = Color.Gray,
+                                        fontSize = 14.sp,
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
                             }
                         }
                     }
 
+                    // NOMBRE + PRECIO + STOCK
                     item {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
@@ -146,9 +166,20 @@ fun DetalleProducto(
                                 color = blanco,
                                 fontWeight = FontWeight.Bold
                             )
+                            Spacer(Modifier.height(4.dp))
+                            Text(
+                                text = if (p.stock > 0)
+                                    "Stock disponible: ${p.stock}"
+                                else
+                                    "Sin stock",
+                                color = if (p.stock > 0) Color(0xFFB9F6CA) else Color(0xFFFFCDD2),
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold
+                            )
                         }
                     }
 
+                    // VALORACIÓN
                     item {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             repeat(5) {
@@ -163,6 +194,7 @@ fun DetalleProducto(
                         }
                     }
 
+                    // DESCRIPCIÓN + FICHA TÉCNICA
                     item {
                         Card(
                             modifier = Modifier
@@ -171,18 +203,95 @@ fun DetalleProducto(
                             colors = CardDefaults.cardColors(containerColor = blanco),
                             shape = RoundedCornerShape(16.dp)
                         ) {
-                            Text(
-                                text = p.descripcion,
-                                style = MaterialTheme.typography.bodyLarge.copy(
-                                    color = Color.DarkGray,
-                                    lineHeight = 22.sp
-                                ),
-                                textAlign = TextAlign.Justify,
-                                modifier = Modifier.padding(16.dp)
-                            )
+                            Column(
+                                modifier = Modifier.padding(16.dp),
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Text(
+                                    "Descripción",
+                                    style = MaterialTheme.typography.titleMedium.copy(
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.Black
+                                    )
+                                )
+                                Text(
+                                    text = p.descripcion,
+                                    style = MaterialTheme.typography.bodyLarge.copy(
+                                        color = Color.DarkGray,
+                                        lineHeight = 22.sp
+                                    ),
+                                    textAlign = TextAlign.Justify
+                                )
+
+                                // 🔥 FICHA TÉCNICA AUTO REAL (CarQuery)
+                                Spacer(Modifier.height(8.dp))
+
+                                Text(
+                                    "Ficha técnica (auto real)",
+                                    style = MaterialTheme.typography.titleMedium.copy(
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.Black
+                                    )
+                                )
+
+                                when {
+                                    cargandoCarInfo -> {
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.Center
+                                        ) {
+                                            CircularProgressIndicator(
+                                                modifier = Modifier.size(28.dp),
+                                                color = rojoHot,
+                                                strokeWidth = 3.dp
+                                            )
+                                        }
+                                    }
+
+                                    carInfo != null -> {
+                                        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                                            Text("Marca: ${carInfo?.model_make_id ?: "-"}")
+                                            Text("Modelo: ${carInfo?.model_name ?: "-"}")
+                                            carInfo?.model_year?.let {
+                                                Text("Año: $it")
+                                            }
+                                            carInfo?.model_engine_power_ps?.let {
+                                                Text("Potencia: ${it} PS")
+                                            }
+                                            carInfo?.model_engine_type?.let {
+                                                Text("Motor: $it")
+                                            }
+                                            carInfo?.model_engine_fuel?.let {
+                                                Text("Combustible: $it")
+                                            }
+                                            carInfo?.model_body?.let {
+                                                Text("Carrocería: $it")
+                                            }
+                                            carInfo?.model_drive?.let {
+                                                Text("Tracción: $it")
+                                            }
+
+                                            Text(
+                                                text = "Datos obtenidos desde CarQuery API.",
+                                                fontSize = 11.sp,
+                                                color = Color.Gray
+                                            )
+                                        }
+                                    }
+
+                                    else -> {
+                                        Text(
+                                            "No se pudo obtener la ficha técnica.",
+                                            fontSize = 12.sp,
+                                            color = Color.Gray
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
 
+                    // OPINIONES
                     item {
                         Card(
                             modifier = Modifier
@@ -211,6 +320,7 @@ fun DetalleProducto(
                         }
                     }
 
+                    // BOTONES
                     item {
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -218,9 +328,15 @@ fun DetalleProducto(
                         ) {
                             Button(
                                 onClick = {
-                                    vm.agregarAlCarrito(p)
-                                    scope.launch {
-                                        snackbarHostState.showSnackbar("Producto agregado al carrito")
+                                    if (p.stock <= 0) {
+                                        scope.launch {
+                                            snackbarHostState.showSnackbar("Sin stock disponible")
+                                        }
+                                    } else {
+                                        vm.agregarAlCarrito(p)
+                                        scope.launch {
+                                            snackbarHostState.showSnackbar("Producto agregado al carrito")
+                                        }
                                     }
                                 },
                                 modifier = Modifier
@@ -258,7 +374,10 @@ fun DetalleProducto(
             }
         } ?: run {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .padding(padding)
+                    .fillMaxSize()
+                    .background(fondoGradiente),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -270,5 +389,3 @@ fun DetalleProducto(
         }
     }
 }
-
-

@@ -16,8 +16,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tiendahotwheels.viewmodel.AuthViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun InicioSesion(
@@ -27,9 +25,10 @@ fun InicioSesion(
 ) {
     var email by remember { mutableStateOf(TextFieldValue("")) }
     var password by remember { mutableStateOf(TextFieldValue("")) }
-    var error by remember { mutableStateOf<String?>(null) }
-    var cargando by remember { mutableStateOf(false) }
-    val scope = rememberCoroutineScope()
+
+    // Leemos estados que vienen del ViewModel
+    val cargando by vm.cargando.collectAsState()
+    val errorVm by vm.error.collectAsState()
 
     val rojoHot = Color(0xFFFF1E00)
     val rojoOscuro = Color(0xFFD90000)
@@ -89,16 +88,13 @@ fun InicioSesion(
 
                 Button(
                     onClick = {
-                        cargando = true
-                        scope.launch {
-                            delay(1000)
-                            val ok = vm.login(email.text, password.text)
-                            cargando = false
-                            if (ok) {
+                        // Ahora usamos el login del ViewModel con callback
+                        vm.login(email.text, password.text) { exito ->
+                            if (exito) {
                                 onLoginOk(email.text)
-                            } else {
-                                error = "Correo o contraseña incorrectos."
                             }
+                            // Si no tiene éxito, el mensaje de error se
+                            // guarda en vm.error y se muestra más abajo
                         }
                     },
                     enabled = !cargando,
@@ -124,7 +120,8 @@ fun InicioSesion(
                     }
                 }
 
-                error?.let {
+                // Mensaje de error que viene del ViewModel (login o registro)
+                errorVm?.let {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         it,
