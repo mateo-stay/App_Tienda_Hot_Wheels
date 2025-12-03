@@ -11,7 +11,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
 
-private const val BASE_URL = "http://10.0.2.2:8080/api"
+private const val BASE_URL = "http://10.0.2.2:8080/"
 
 class ProductRepository(
     context: Context,
