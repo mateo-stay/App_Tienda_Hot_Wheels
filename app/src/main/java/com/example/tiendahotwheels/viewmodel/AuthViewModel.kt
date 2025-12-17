@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+
 class AuthViewModel(
     private val repo: AuthRepository
 ) : ViewModel() {
@@ -22,7 +23,7 @@ class AuthViewModel(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
-    // --------- Validaciones locales ---------
+    // --------- VALIDACIONES ---------
 
     private fun validarRut(rut: String): Boolean {
         val rutLimpio = rut.replace(".", "").replace("-", "").uppercase()
@@ -52,9 +53,9 @@ class AuthViewModel(
     }
 
     private fun validarCorreo(email: String): Boolean {
-        val patronCorreo =
+        val patron =
             Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}\$")
-        return patronCorreo.matches(email)
+        return patron.matches(email)
     }
 
     // ---------- REGISTRO (API) ----------
@@ -66,6 +67,7 @@ class AuthViewModel(
         password: String,
         onResult: (String?) -> Unit
     ) {
+        // Validaciones locales
         if (nombre.isBlank() || email.isBlank() || direccion.isBlank() || rut.isBlank() || password.isBlank()) {
             val msg = "Por favor completa todos los campos requeridos."
             _error.value = msg
@@ -94,25 +96,26 @@ class AuthViewModel(
             return
         }
 
+        // Usuario temporal para UI
         val nuevoUsuario = Usuario(nombre, email, direccion, rut, password)
 
         viewModelScope.launch {
             _cargando.value = true
             _error.value = null
 
-            // El repo tiene: suspend fun registrar(nombre,email,password): Boolean
+            // Repo devuelve TRUE si fue exitoso
             val exito = repo.registrar(nombre, email, password)
 
             _cargando.value = false
 
-            val msgError = if (!exito) "Error al registrar usuario." else null
-            if (msgError != null) {
+            if (!exito) {
+                val msgError = "Error al registrar usuario."
                 _error.value = msgError
+                onResult(msgError)
             } else {
                 _usuarioActual.value = nuevoUsuario
+                onResult(null) // null = OK
             }
-
-            onResult(msgError)   // null = OK, string = error
         }
     }
 
@@ -126,8 +129,7 @@ class AuthViewModel(
             _cargando.value = true
             _error.value = null
 
-            // En el repo: suspend fun login(...): String?
-            val errorRepo: String? = repo.login(email, password)
+            val errorRepo = repo.login(email, password)
 
             _cargando.value = false
 

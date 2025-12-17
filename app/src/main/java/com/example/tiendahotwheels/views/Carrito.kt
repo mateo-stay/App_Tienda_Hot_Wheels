@@ -31,7 +31,7 @@ fun Carrito(
     onFinalizarCompra: (exito: Boolean) -> Unit,
     onVolver: () -> Unit
 ) {
-    // ✅ StateFlow → State
+
     val carrito by vm.carrito.collectAsState()
     val total = vm.total()
 
@@ -73,12 +73,15 @@ fun Carrito(
                 .fillMaxSize()
                 .background(Brush.verticalGradient(listOf(rojoHot, rojoOscuro)))
         ) {
+
             Column(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxSize()
             ) {
+
                 if (carrito.isEmpty()) {
+
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
@@ -92,21 +95,24 @@ fun Carrito(
                             textAlign = TextAlign.Center
                         )
                     }
+
                 } else {
+
                     LazyColumn(
                         modifier = Modifier
                             .weight(1f)
                             .padding(bottom = 8.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        // ✅ ahora usamos items(carrito) directamente
                         items(carrito) { item ->
+
                             Card(
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = RoundedCornerShape(16.dp),
                                 elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
                                 colors = CardDefaults.cardColors(containerColor = blanco)
                             ) {
+
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -114,6 +120,7 @@ fun Carrito(
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
+
                                     Column(Modifier.weight(1f)) {
                                         Text(
                                             text = item.producto.nombre,
@@ -138,9 +145,11 @@ fun Carrito(
                                         )
                                     }
 
-                                    IconButton(onClick = {
-                                        vm.eliminarDelCarrito(item.producto.id)
-                                    }) {
+                                    IconButton(
+                                        onClick = {
+                                            vm.eliminarDelCarrito(item.producto.id)
+                                        }
+                                    ) {
                                         Icon(
                                             imageVector = Icons.Filled.Delete,
                                             contentDescription = "Eliminar del carrito",
@@ -158,6 +167,7 @@ fun Carrito(
                         color = Color.White.copy(alpha = 0.7f)
                     )
 
+                    // TOTAL DE LA COMPRA
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
@@ -181,12 +191,19 @@ fun Carrito(
 
                     Spacer(Modifier.height(16.dp))
 
+                    // BOTONES
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
+
+                        // 🚀 FINALIZAR COMPRA (DESCUENTA STOCK REAL)
                         Button(
-                            onClick = { onFinalizarCompra(true) },
+                            onClick = {
+                                vm.finalizarCompra { exito ->
+                                    onFinalizarCompra(exito)
+                                }
+                            },
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(8.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = Color.White)
@@ -198,6 +215,7 @@ fun Carrito(
                             )
                         }
 
+                        // ❌ BOTÓN PARA SIMULAR ERROR (NO DESCUENTA STOCK)
                         OutlinedButton(
                             onClick = { onFinalizarCompra(false) },
                             modifier = Modifier.weight(1f),
@@ -212,10 +230,9 @@ fun Carrito(
                             )
                         }
                     }
+
                 }
             }
         }
     }
 }
-
-

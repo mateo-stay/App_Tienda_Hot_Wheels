@@ -1,160 +1,131 @@
 package com.example.tiendahotwheels.data
 
 import android.content.Context
+import android.net.Uri
+import com.example.tiendahotwheels.data.remote.ApiClient
+import com.example.tiendahotwheels.data.remote.ProductoDto
 import com.example.tiendahotwheels.model.Producto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONArray
-import org.json.JSONObject
 
-private const val BASE_URL = "http://10.0.2.2:8080/"
+// 🔥 IMPORTS NECESARIOS PARA SUBIR ARCHIVOS
+import okhttp3.MultipartBody
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class ProductRepository(
-    context: Context,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val context: Context
 ) {
 
-    private val client = OkHttpClient()
-    private val jsonMediaType = "application/json".toMediaType()
-
-    // --- Helper para armar request con Authorization ---
-    private fun Request.Builder.withAuth(): Request.Builder {
+    private fun authHeader(): String {
         val token = authRepository.getToken()
-        if (!token.isNullOrBlank()) {
-            header("Authorization", "Bearer $token")
-        }
-        return this
+        return "Bearer $token"
     }
 
-    // --- GET /api/productos ---
-    suspend fun cargarProductos(): List<Producto> = withContext(Dispatchers.IO) {
-        val request = Request.Builder()
-            .url("$BASE_URL/productos")
-            .withAuth()
-            .get()
-            .build()
-
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) {
-                throw RuntimeException("Error al cargar productos: ${response.code}")
-            }
-
-            val body = response.body?.string() ?: "[]"
-            val jsonArray = JSONArray(body)
-            val lista = mutableListOf<Producto>()
-
-            for (i in 0 until jsonArray.length()) {
-                val obj = jsonArray.getJSONObject(i)
-                lista.add(
-                    Producto(
-                        id = obj.getLong("id").toString(),
-                        nombre = obj.getString("nombre"),
-                        descripcion = obj.optString("descripcion", ""),
-                        precio = obj.getDouble("precio"),
-                        categoria = obj.optString("categoria", ""),
-                        imagenUrl = obj.optString("imagenUrl", ""),
-                        stock = obj.optInt("stock", 0)      // 👈 AHORA SÍ
-                    )
+    // ------------------ LISTAR ------------------
+    suspend fun cargarProductos(): List<Producto> =
+        withContext(Dispatchers.IO) {
+            val listaDto = ApiClient.api.listarProductos(authHeader())
+            listaDto.map { dto ->
+                Producto(
+                    id = dto.id.toString(),
+                    nombre = dto.nombre,
+                    descripcion = dto.descripcion,
+                    precio = dto.precio,
+                    categoria = dto.categoria,
+                    imagenUrl = dto.imagenUrl ?: "",
+                    stock = dto.stock
                 )
             }
-            lista
-        }
-    }
-
-    // --- POST /api/productos ---
-    suspend fun crearProducto(producto: Producto): Producto = withContext(Dispatchers.IO) {
-        val json = JSONObject().apply {
-            put("nombre", producto.nombre)
-            put("descripcion", producto.descripcion)
-            put("precio", producto.precio)
-            put("categoria", producto.categoria)
-            put("imagenUrl", producto.imagenUrl)
-            put("stock", producto.stock)   // 👈 ENVIAMOS STOCK
         }
 
-        val body = json.toString().toRequestBody(jsonMediaType)
+    // ------------------ CREAR ------------------
+    suspend fun crearProducto(producto: Producto): Producto =
+        withContext(Dispatchers.IO) {
+            val dto = ProductoDto(
+                id = null,
+                nombre = producto.nombre,
+                descripcion = producto.descripcion,
+                categoria = producto.categoria,
+                precio = producto.precio,
+                imagenUrl = producto.imagenUrl,
+                stock = producto.stock
+            )
 
-        val request = Request.Builder()
-            .url("$BASE_URL/productos")
-            .withAuth()
-            .post(body)
-            .build()
-
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) {
-                throw RuntimeException("Error al crear producto: ${response.code}")
-            }
-
-            val resBody = response.body?.string() ?: throw RuntimeException("Respuesta vacía")
-            val obj = JSONObject(resBody)
+            val creado = ApiClient.api.crearProducto(dto, authHeader())
 
             Producto(
-                id = obj.getLong("id").toString(),
-                nombre = obj.getString("nombre"),
-                descripcion = obj.optString("descripcion", ""),
-                precio = obj.getDouble("precio"),
-                categoria = obj.optString("categoria", ""),
-                imagenUrl = obj.optString("imagenUrl", ""),
-                stock = obj.optInt("stock", 0)      // 👈 LEEMOS STOCK
+                id = creado.id.toString(),
+                nombre = creado.nombre,
+                descripcion = creado.descripcion,
+                categoria = creado.categoria,
+                precio = creado.precio,
+                imagenUrl = creado.imagenUrl ?: "",
+                stock = creado.stock
             )
         }
-    }
 
-    // --- PUT /api/productos/{id} ---
-    suspend fun actualizarProducto(producto: Producto): Producto = withContext(Dispatchers.IO) {
-        val json = JSONObject().apply {
-            put("nombre", producto.nombre)
-            put("descripcion", producto.descripcion)
-            put("precio", producto.precio)
-            put("categoria", producto.categoria)
-            put("imagenUrl", producto.imagenUrl)
-            put("stock", producto.stock)   // 👈 ENVIAMOS STOCK TAMBIÉN
-        }
+    // ------------------ ACTUALIZAR ------------------
+    suspend fun actualizarProducto(producto: Producto): Producto =
+        withContext(Dispatchers.IO) {
+            val dto = ProductoDto(
+                id = producto.id.toLong(),
+                nombre = producto.nombre,
+                descripcion = producto.descripcion,
+                categoria = producto.categoria,
+                precio = producto.precio,
+                imagenUrl = producto.imagenUrl,
+                stock = producto.stock
+            )
 
-        val body = json.toString().toRequestBody(jsonMediaType)
-
-        val request = Request.Builder()
-            .url("$BASE_URL/productos/${producto.id}")
-            .withAuth()
-            .put(body)
-            .build()
-
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) {
-                throw RuntimeException("Error al actualizar producto: ${response.code}")
-            }
-
-            val resBody = response.body?.string() ?: throw RuntimeException("Respuesta vacía")
-            val obj = JSONObject(resBody)
+            val actualizado = ApiClient.api.actualizarProducto(
+                producto.id.toLong(),
+                dto,
+                authHeader()
+            )
 
             Producto(
-                id = obj.getLong("id").toString(),
-                nombre = obj.getString("nombre"),
-                descripcion = obj.optString("descripcion", ""),
-                precio = obj.getDouble("precio"),
-                categoria = obj.optString("categoria", ""),
-                imagenUrl = obj.optString("imagenUrl", ""),
-                stock = obj.optInt("stock", 0)      // 👈 Y AQUÍ IGUAL
+                id = actualizado.id.toString(),
+                nombre = actualizado.nombre,
+                descripcion = actualizado.descripcion,
+                categoria = actualizado.categoria,
+                precio = actualizado.precio,
+                imagenUrl = actualizado.imagenUrl ?: "",
+                stock = actualizado.stock
             )
         }
-    }
 
-    // --- DELETE /api/productos/{id} ---
-    suspend fun eliminarProducto(idProducto: String) = withContext(Dispatchers.IO) {
-        val request = Request.Builder()
-            .url("$BASE_URL/productos/$idProducto")
-            .withAuth()
-            .delete()
-            .build()
-
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) {
-                throw RuntimeException("Error al eliminar producto: ${response.code}")
-            }
+    // ------------------ ELIMINAR ------------------
+    suspend fun eliminarProducto(idProducto: String) =
+        withContext(Dispatchers.IO) {
+            ApiClient.api.eliminarProducto(idProducto.toLong(), authHeader())
         }
+
+    // ------------------ STOCK ------------------
+    suspend fun descontarStock(id: String, cantidad: Int) =
+        withContext(Dispatchers.IO) {
+            ApiClient.api.descontarStock(id.toLong(), cantidad, authHeader())
+        }
+
+    suspend fun sumarStock(id: String, cantidad: Int) =
+        withContext(Dispatchers.IO) {
+            ApiClient.api.sumarStock(id.toLong(), cantidad, authHeader())
+        }
+
+    // ------------------ SUBIR IMAGEN 🔥 ------------------
+    suspend fun subirImagen(uri: Uri): String? {
+        val stream = context.contentResolver.openInputStream(uri) ?: return null
+        val bytes = stream.readBytes()
+
+        val requestFile = bytes.toRequestBody("image/*".toMediaType())
+        val part = MultipartBody.Part.createFormData(
+            "file",
+            "upload.jpg",
+            requestFile
+        )
+
+        val res = ApiClient.api.uploadImage(part)
+        return res.url
     }
 }

@@ -21,12 +21,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Repositorios basados en API
-        val authRepository = AuthRepository(this)          // 👈 PASAMOS context
+        // Repositorio Auth usa contexto → correcto
+        val authRepository = AuthRepository(this)
         val authVM = AuthViewModel(authRepository)
 
-        // Pasamos también authRepository al repositorio de productos
-        val productRepository = ProductRepository(this, authRepository)
+        // AHORA ProductRepository RECIBE EL CONTEXTO
+        val productRepository = ProductRepository(authRepository, applicationContext)
         val productVM = ProductViewModel(productRepository)
 
         setContent {
@@ -88,10 +88,8 @@ fun AppTiendaHotWheels(
         }
 
         composable(
-            route = "detalle_producto/{id}",
-            arguments = listOf(
-                navArgument("id") { type = NavType.StringType }
-            )
+            "detalle_producto/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.StringType })
         ) { backStack ->
             val id = backStack.arguments?.getString("id") ?: return@composable
             DetalleProducto(
@@ -108,8 +106,8 @@ fun AppTiendaHotWheels(
                 onFinalizarCompra = { exitoso ->
                     if (exitoso) {
                         val id = System.currentTimeMillis().toString()
-                        val totalCompra = productVM.total()
-                        nav.navigate("compra_exitosa/$id/$totalCompra")
+                        val total = productVM.total()
+                        nav.navigate("compra_exitosa/$id/$total")
                     } else {
                         nav.navigate("compra_fallida")
                     }
@@ -119,7 +117,7 @@ fun AppTiendaHotWheels(
         }
 
         composable(
-            route = "compra_exitosa/{id}/{total}",
+            "compra_exitosa/{id}/{total}",
             arguments = listOf(
                 navArgument("id") { type = NavType.StringType },
                 navArgument("total") { type = NavType.StringType }
@@ -158,13 +156,10 @@ fun AppTiendaHotWheels(
         }
 
         composable(
-            route = "editar_producto/{id}",
-            arguments = listOf(
-                navArgument("id") { type = NavType.StringType }
-            )
+            "editar_producto/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.StringType })
         ) { backStackEntry ->
             val idStr = backStackEntry.arguments?.getString("id") ?: return@composable
-
             EditarProducto(
                 navController = nav,
                 productoVM = productVM,
